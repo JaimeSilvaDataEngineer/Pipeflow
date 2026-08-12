@@ -38,14 +38,14 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Scaffold Next.js 14 (App Router) + TypeScript strict + Tailwind CSS
-- [ ] Instalar e configurar shadcn/ui (tema `blue` + base `slate`)
-- [ ] Configurar `next/font` com Inter
-- [ ] Criar estrutura de pastas conforme [CLAUDE.md](../CLAUDE.md) (`src/app`, `src/components`, `src/lib`, `src/types`)
-- [ ] Adicionar utilitários base: `formatCurrency`, `cn`, constantes de pipeline (stages + cores)
-- [ ] Configurar ESLint, Prettier e script `typecheck`
-- [ ] Criar `.env.example` com placeholders (Supabase, Stripe, Resend)
-- [ ] README com comandos de dev (`npm run dev`, `lint`, `build`)
+- [x] Scaffold Next.js 14 (App Router) + TypeScript strict + Tailwind CSS
+- [x] Instalar e configurar shadcn/ui (tema `blue` + base `slate`)
+- [x] Configurar `next/font` com Inter
+- [x] Criar estrutura de pastas conforme [CLAUDE.md](../CLAUDE.md) (`src/app`, `src/components`, `src/lib`, `src/types`)
+- [x] Adicionar utilitários base: `formatCurrency`, `cn`, constantes de pipeline (stages + cores)
+- [x] Configurar ESLint, Prettier e script `typecheck`
+- [x] Criar `.env.example` com placeholders (Supabase, Stripe, Resend)
+- [x] README com comandos de dev (`npm run dev`, `lint`, `build`)
 
 **Commit final:** `chore: scaffold Next.js app with design system and project structure`
 
