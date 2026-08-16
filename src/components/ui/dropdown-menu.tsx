@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
 
 import { cn } from "@/lib/utils";
@@ -48,9 +49,9 @@ function DropdownMenuItem({
   );
 }
 
-function DropdownMenuLabel({ className, ...props }: MenuPrimitive.GroupLabel.Props) {
+function DropdownMenuLabel({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <MenuPrimitive.GroupLabel
+    <div
       data-slot="dropdown-menu-label"
       className={cn("text-muted-foreground px-2 py-1.5 text-xs font-medium", className)}
       {...props}
