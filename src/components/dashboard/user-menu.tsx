@@ -32,9 +32,7 @@ function UserMenu({ workspaceSlug }: { workspaceSlug: string }) {
           <span className="text-muted-foreground text-xs font-normal">{MOCK_USER.email}</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          render={<a href={`/${workspaceSlug}/settings`} />}
-        >
+        <DropdownMenuItem render={<a href={`/${workspaceSlug}/settings`} />}>
           <User />
           Perfil
         </DropdownMenuItem>

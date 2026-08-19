@@ -1,4 +1,12 @@
 {
+  "cleanupPeriodDays": 30,
+  "env": {
+    "BASH_DEFAULT_TIMEOUT_MS": "60000",
+    "BASH_MAX_OUTPUT_LENGTH": "20000",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
+    "NODE_ENV": "development"
+  },
+  "includeCoAuthoredBy": true,
   "permissions": {
     "allow": [
       "Bash",
@@ -16,24 +24,19 @@
       "Bash(jest:*)",
       "Bash(vitest:*)",
       "Bash(webpack:*)",
-      "Bash(vite:*)"
+      "Bash(vite:*)",
+      "Bash(bash -c \"netstat -ano | grep LISTENING | grep ':3000 '\")",
+      "Bash(bash -c 'curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/login')",
+      "Bash(bash -c \"netstat -ano | grep 3000\")",
+      "Bash(powershell -NoProfile -Command \"Get-NetTCPConnection -LocalPort 3000 -State Listen | Select-Object -ExpandProperty OwningProcess\")"
     ],
     "deny": [
       "Bash(curl:*)",
       "Bash(wget:*)",
       "Bash(rm -rf:*)"
     ],
-    
     "defaultMode": "acceptEdits"
   },
-  "env": {
-    "BASH_DEFAULT_TIMEOUT_MS": "60000",
-    "BASH_MAX_OUTPUT_LENGTH": "20000",
-    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
-    "NODE_ENV": "development"
-  },
-  "includeCoAuthoredBy": true,
-  "cleanupPeriodDays": 30,
   "hooks": {
     "PreToolUse": [
       {

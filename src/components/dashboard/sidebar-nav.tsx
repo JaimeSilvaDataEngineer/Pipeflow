@@ -6,7 +6,13 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS } from "@/components/dashboard/nav-items";
 
-function SidebarNav({ workspaceSlug, onNavigate }: { workspaceSlug: string; onNavigate?: () => void }) {
+function SidebarNav({
+  workspaceSlug,
+  onNavigate,
+}: {
+  workspaceSlug: string;
+  onNavigate?: () => void;
+}) {
   const pathname = usePathname();
 
   return (
