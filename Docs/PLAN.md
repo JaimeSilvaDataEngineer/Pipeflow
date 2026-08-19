@@ -59,15 +59,15 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Route groups: `(marketing)`, `(auth)`, `(dashboard)/[workspace]`
-- [ ] Layout do dashboard: sidebar fixa + área de conteúdo
-- [ ] Navegação: Leads, Pipeline, Dashboard, Settings
-- [ ] Header com dropdown de workspace (mock: 2 workspaces)
-- [ ] Avatar/menu do usuário (mock)
-- [ ] Páginas placeholder para cada rota (`/leads`, `/pipeline`, `/dashboard`, `/settings`)
-- [ ] Páginas de auth (login/signup) — UI estática, sem integração
-- [ ] Middleware stub que redireciona rotas protegidas (hardcoded por enquanto)
-- [ ] Responsivo: sidebar colapsável em mobile
+- [x] Route groups: `(marketing)`, `(auth)`, `(dashboard)/[workspace]`
+- [x] Layout do dashboard: sidebar fixa + área de conteúdo
+- [x] Navegação: Leads, Pipeline, Dashboard, Settings
+- [x] Header com dropdown de workspace (mock: 2 workspaces)
+- [x] Avatar/menu do usuário (mock)
+- [x] Páginas placeholder para cada rota (`/leads`, `/pipeline`, `/dashboard`, `/settings`)
+- [x] Páginas de auth (login/signup) — UI estática, sem integração
+- [x] Middleware stub que redireciona rotas protegidas (hardcoded por enquanto)
+- [x] Responsivo: sidebar colapsável em mobile
 
 **Commit final:** `feat(ui): add dashboard shell, sidebar navigation and route placeholders`
 
