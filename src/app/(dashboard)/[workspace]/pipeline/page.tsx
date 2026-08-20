@@ -1,13 +1,9 @@
-import { SquareKanban } from "lucide-react";
+import { PipelineBoard } from "@/components/kanban/pipeline-board";
+import { mockDelay } from "@/lib/mock/delay";
+import { MOCK_DEALS } from "@/lib/mock/deals";
 
-import { PlaceholderPage } from "@/components/dashboard/placeholder-page";
+export default async function PipelinePage() {
+  await mockDelay();
 
-export default function PipelinePage() {
-  return (
-    <PlaceholderPage
-      icon={SquareKanban}
-      title="Pipeline"
-      description="O quadro Kanban com drag-and-drop chega na M3."
-    />
-  );
+  return <PipelineBoard initialDeals={MOCK_DEALS} />;
 }
