@@ -2,17 +2,31 @@
 
 import { ArrowLeftIcon, ClockIcon, PencilIcon } from "lucide-react";
 import Link from "next/link";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LeadFormSheet } from "@/components/leads/lead-form-sheet";
 import { LeadStatusBadge } from "@/components/leads/lead-status-badge";
 import { MemberAvatar } from "@/components/leads/member-avatar";
+import type { LeadFormValues } from "@/lib/validations/lead";
 import type { Lead } from "@/types/lead";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", { dateStyle: "long" });
 
-function LeadDetail({ lead, workspaceSlug }: { lead: Lead; workspaceSlug: string }) {
+function LeadDetail({
+  lead: initialLead,
+  workspaceSlug,
+}: {
+  lead: Lead;
+  workspaceSlug: string;
+}) {
+  const [lead, setLead] = React.useState(initialLead);
+
+  function handleEdit(values: LeadFormValues) {
+    setLead((current) => ({ ...current, ...values }));
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <Link
@@ -32,7 +46,7 @@ function LeadDetail({ lead, workspaceSlug }: { lead: Lead; workspaceSlug: string
             </div>
             <LeadFormSheet
               lead={lead}
-              onSubmit={() => {}}
+              onSubmit={handleEdit}
               trigger={
                 <Button variant="outline" size="icon-sm">
                   <PencilIcon />
