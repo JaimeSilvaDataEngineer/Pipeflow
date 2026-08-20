@@ -1,13 +1,9 @@
-import { Users } from "lucide-react";
+import { LeadsExplorer } from "@/components/leads/leads-explorer";
+import { mockDelay } from "@/lib/mock/delay";
+import { MOCK_LEADS } from "@/lib/mock/leads";
 
-import { PlaceholderPage } from "@/components/dashboard/placeholder-page";
+export default async function LeadsPage({ params }: { params: { workspace: string } }) {
+  await mockDelay();
 
-export default function LeadsPage() {
-  return (
-    <PlaceholderPage
-      icon={Users}
-      title="Leads"
-      description="Listagem, filtros e cadastro de leads chegam na M2."
-    />
-  );
+  return <LeadsExplorer initialLeads={MOCK_LEADS} workspaceSlug={params.workspace} />;
 }

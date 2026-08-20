@@ -37,7 +37,7 @@ function SheetContent({
       <DialogPrimitive.Popup
         data-slot="sheet-content"
         className={cn(
-          "bg-sidebar text-sidebar-foreground fixed inset-y-0 z-50 flex w-72 flex-col border-r shadow-lg outline-none transition-transform",
+          "bg-sidebar text-sidebar-foreground fixed inset-y-0 z-50 flex w-72 flex-col border-r shadow-lg transition-transform outline-none",
           side === "left" &&
             "left-0 data-[ending-style]:-translate-x-full data-[starting-style]:-translate-x-full",
           side === "right" &&

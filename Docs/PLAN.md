@@ -81,16 +81,16 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Tipos TypeScript: `Lead`, `LeadStatus` em `src/types/`
-- [ ] Dataset mock de leads (`src/lib/mock/leads.ts`)
-- [ ] Página de listagem: tabela shadcn com colunas (nome, e-mail, empresa, status, responsável)
-- [ ] Barra de busca (filtro client-side por nome/e-mail/empresa)
-- [ ] Filtros: status, responsável, data de criação
-- [ ] Dialog/sheet de criação e edição de lead (formulário completo)
-- [ ] Página de detalhe `/leads/[id]`: perfil do lead + área reservada para timeline
-- [ ] Badges de status com cores do design system
-- [ ] Empty state e loading skeleton
-- [ ] Zod schema em `lib/validations/lead.ts` (validação do form, ainda sem submit real)
+- [x] Tipos TypeScript: `Lead`, `LeadStatus` em `src/types/`
+- [x] Dataset mock de leads (`src/lib/mock/leads.ts`)
+- [x] Página de listagem: tabela shadcn com colunas (nome, e-mail, empresa, status, responsável)
+- [x] Barra de busca (filtro client-side por nome/e-mail/empresa)
+- [x] Filtros: status, responsável, data de criação
+- [x] Dialog/sheet de criação e edição de lead (formulário completo)
+- [x] Página de detalhe `/leads/[id]`: perfil do lead + área reservada para timeline
+- [x] Badges de status com cores do design system
+- [x] Empty state e loading skeleton
+- [x] Zod schema em `lib/validations/lead.ts` (validação do form, ainda sem submit real)
 
 **Commit final:** `feat(ui): add leads list, filters, form and detail page with mock data`
 

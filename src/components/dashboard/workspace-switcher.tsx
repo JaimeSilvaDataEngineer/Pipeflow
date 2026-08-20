@@ -17,7 +17,8 @@ import { MOCK_WORKSPACES } from "@/lib/mock/workspace";
 
 function WorkspaceSwitcher({ workspaceSlug }: { workspaceSlug: string }) {
   const router = useRouter();
-  const active = MOCK_WORKSPACES.find((workspace) => workspace.slug === workspaceSlug) ?? MOCK_WORKSPACES[0];
+  const active =
+    MOCK_WORKSPACES.find((workspace) => workspace.slug === workspaceSlug) ?? MOCK_WORKSPACES[0];
 
   return (
     <DropdownMenu>
@@ -41,7 +42,10 @@ function WorkspaceSwitcher({ workspaceSlug }: { workspaceSlug: string }) {
           >
             <Building2 className="text-muted-foreground" />
             <span className="flex-1 truncate">{workspace.name}</span>
-            <Badge variant={workspace.plan === "pro" ? "default" : "secondary"} className="uppercase">
+            <Badge
+              variant={workspace.plan === "pro" ? "default" : "secondary"}
+              className="uppercase"
+            >
               {workspace.plan}
             </Badge>
             <Check className={cn("size-4", workspace.slug !== active.slug && "opacity-0")} />
