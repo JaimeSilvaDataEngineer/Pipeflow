@@ -18,7 +18,8 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 | M3 | `milestone/03-pipeline-ui` | UI | Kanban drag-and-drop (mock) |
 | M4a | `milestone/04-dashboard-ui` | UI | Dashboard de métricas e funil (mock) |
 | M4b | `milestone/04-activities-ui` | UI | Timeline de atividades no lead (mock) |
-| M5 | `milestone/05-settings-landing-ui` | UI | Settings, billing UI e landing page |
+| M5a | `milestone/05-landing-ui` | UI | Landing page pública (marketing) |
+| M5b | `milestone/05-settings-billing-ui` | UI | Settings, membros e billing UI |
 | M6 | `milestone/06-supabase-schema` | Backend | Banco, migrations e RLS |
 | M7 | `milestone/07-auth-workspaces` | Backend | Auth, workspaces e membros |
 | M8 | `milestone/08-leads-backend` | Backend | CRUD de leads com Supabase |
@@ -155,11 +156,27 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ---
 
-## M5 — Settings, Billing UI e Landing Page
+## M5a — Landing Page (Marketing)
 
-**Branch:** `milestone/05-settings-landing-ui`
+**Branch:** `milestone/05-landing-ui`
 
-**Objetivo:** Fechar todas as telas de interface restantes — configurações do workspace, membros, billing e landing page pública — antes de conectar qualquer backend.
+**Objetivo:** Página pública de marketing — a porta de entrada do produto — ainda sem backend.
+
+### Entregas
+
+- [ ] Landing page `(marketing)/`: hero, funcionalidades, pricing, CTA
+- [ ] Navbar pública + footer
+- [ ] Links: landing → signup → dashboard mock
+
+**Commit final:** `feat(ui): add public marketing landing page`
+
+---
+
+## M5b — Settings e Billing UI (Mock)
+
+**Branch:** `milestone/05-settings-billing-ui`
+
+**Objetivo:** Configurações do workspace, membros e billing, ainda com dados estáticos.
 
 ### Entregas
 
@@ -169,11 +186,8 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 - [ ] Dialog de convite por e-mail (UI only)
 - [ ] Página Billing: card do plano atual (Free/Pro), limites, CTA upgrade
 - [ ] Comparativo Free vs Pro conforme PRD (2 membros/50 leads vs ilimitado/R$49)
-- [ ] Landing page `(marketing)/`: hero, funcionalidades, pricing, CTA
-- [ ] Navbar pública + footer
-- [ ] Links: landing → signup → dashboard mock
 
-**Commit final:** `feat(ui): add settings, billing screens and marketing landing page`
+**Commit final:** `feat(ui): add settings, members and billing screens (mock data)`
 
 ---
 
@@ -382,11 +396,12 @@ flowchart LR
     M2 --> M3[Pipeline UI]
     M3 --> M4a[Dashboard UI]
     M4a --> M4b[Atividades UI]
-    M4b --> M5[Settings + Landing]
+    M4b --> M5a[Landing Page]
+    M5a --> M5b[Settings + Billing]
   end
 
   subgraph backend [Fase Backend — M6 a M13]
-    M5 --> M6[Schema + RLS]
+    M5b --> M6[Schema + RLS]
     M6 --> M7[Auth]
     M7 --> M8[Leads]
     M8 --> M9[Pipeline]
