@@ -16,7 +16,8 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 | M1 | `milestone/01-app-shell` | UI | Layout, sidebar, rotas do dashboard |
 | M2 | `milestone/02-leads-ui` | UI | Listagem, formulário e detalhe de leads |
 | M3 | `milestone/03-pipeline-ui` | UI | Kanban drag-and-drop (mock) |
-| M4 | `milestone/04-activities-dashboard-ui` | UI | Timeline, métricas e funil (mock) |
+| M4a | `milestone/04-dashboard-ui` | UI | Dashboard de métricas e funil (mock) |
+| M4b | `milestone/04-activities-ui` | UI | Timeline de atividades no lead (mock) |
 | M5 | `milestone/05-settings-landing-ui` | UI | Settings, billing UI e landing page |
 | M6 | `milestone/06-supabase-schema` | Backend | Banco, migrations e RLS |
 | M7 | `milestone/07-auth-workspaces` | Backend | Auth, workspaces e membros |
@@ -119,11 +120,29 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ---
 
-## M4 — Atividades e Dashboard UI (Mock)
+## M4a — Dashboard de Métricas UI (Mock)
 
-**Branch:** `milestone/04-activities-dashboard-ui`
+**Branch:** `milestone/04-dashboard-ui`
 
-**Objetivo:** Completar as telas de produtividade — timeline de atividades na página do lead e dashboard de métricas com gráfico de funil — ainda com dados estáticos.
+**Objetivo:** Dashboard de métricas de vendas com gráfico de funil, ainda com dados estáticos — depende dos mocks de `Deal`/`PipelineStage` da M3.
+
+### Entregas
+
+- [ ] Página Dashboard: 4 metric cards (total leads, negócios abertos, valor pipeline, taxa conversão)
+- [ ] Gráfico de funil com Recharts
+- [ ] Seção "Negócios com prazo próximo" (lista mock)
+- [ ] Componentes reutilizáveis: `MetricCard`, `FunnelChart`
+- [ ] Layout responsivo do dashboard (grid 2×2 → 1 coluna mobile)
+
+**Commit final:** `feat(ui): add sales dashboard with metrics and funnel chart (mock data)`
+
+---
+
+## M4b — Timeline de Atividades UI (Mock)
+
+**Branch:** `milestone/04-activities-ui`
+
+**Objetivo:** Timeline de atividades (ligações, e-mails, reuniões, notas) na página de detalhe do lead, ainda com dados estáticos.
 
 ### Entregas
 
@@ -131,13 +150,8 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 - [ ] Mock de atividades vinculadas a leads
 - [ ] Componente `ActivityTimeline` na página de detalhe do lead
 - [ ] Formulário de nova atividade (dialog)
-- [ ] Página Dashboard: 4 metric cards (total leads, negócios abertos, valor pipeline, taxa conversão)
-- [ ] Gráfico de funil com Recharts
-- [ ] Seção "Negócios com prazo próximo" (lista mock)
-- [ ] Componentes reutilizáveis: `MetricCard`, `FunnelChart`
-- [ ] Layout responsivo do dashboard (grid 2×2 → 1 coluna mobile)
 
-**Commit final:** `feat(ui): add activity timeline and sales dashboard with mock metrics`
+**Commit final:** `feat(ui): add activity timeline to lead detail page (mock data)`
 
 ---
 
@@ -366,8 +380,9 @@ flowchart LR
     M0[Setup] --> M1[Shell]
     M1 --> M2[Leads UI]
     M2 --> M3[Pipeline UI]
-    M3 --> M4[Dashboard UI]
-    M4 --> M5[Settings + Landing]
+    M3 --> M4a[Dashboard UI]
+    M4a --> M4b[Atividades UI]
+    M4b --> M5[Settings + Landing]
   end
 
   subgraph backend [Fase Backend — M6 a M13]
