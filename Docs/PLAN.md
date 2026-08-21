@@ -128,11 +128,11 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Página Dashboard: 4 metric cards (total leads, negócios abertos, valor pipeline, taxa conversão)
-- [ ] Gráfico de funil com Recharts
-- [ ] Seção "Negócios com prazo próximo" (lista mock)
-- [ ] Componentes reutilizáveis: `MetricCard`, `FunnelChart`
-- [ ] Layout responsivo do dashboard (grid 2×2 → 1 coluna mobile)
+- [x] Página Dashboard: 4 metric cards (total leads, negócios abertos, valor pipeline, taxa conversão)
+- [x] Gráfico de funil com Recharts
+- [x] Seção "Negócios com prazo próximo" (lista mock)
+- [x] Componentes reutilizáveis: `MetricCard`, `FunnelChart`
+- [x] Layout responsivo do dashboard (grid 2×2 → 1 coluna mobile)
 
 **Commit final:** `feat(ui): add sales dashboard with metrics and funnel chart (mock data)`
 
