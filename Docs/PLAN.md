@@ -104,16 +104,16 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Instalar e configurar `@dnd-kit/core`, `@dnd-kit/sortable`
-- [ ] Tipos: `Deal`, `PipelineStage` + mock data (`src/lib/mock/deals.ts`)
-- [ ] Componentes: `PipelineBoard`, `PipelineColumn`, `DealCard`
-- [ ] 6 colunas: Novo Lead → Contato Realizado → Proposta Enviada → Negociação → Fechado Ganho / Fechado Perdido
-- [ ] Cores por etapa (gray, blue, amber, green, red)
-- [ ] Cards: título, valor (R$ formatado), lead vinculado, responsável, prazo
-- [ ] Drag-and-drop entre colunas (estado React local, optimistic UI)
-- [ ] Dialog de criação/edição de negócio
-- [ ] Contador de cards e soma de valores por coluna
-- [ ] Scroll horizontal nas colunas; colunas com altura mínima consistente
+- [x] Instalar e configurar `@dnd-kit/core`, `@dnd-kit/sortable`
+- [x] Tipos: `Deal`, `PipelineStage` + mock data (`src/lib/mock/deals.ts`)
+- [x] Componentes: `PipelineBoard`, `PipelineColumn`, `DealCard`
+- [x] 6 colunas: Novo Lead → Contato Realizado → Proposta Enviada → Negociação → Fechado Ganho / Fechado Perdido
+- [x] Cores por etapa (gray, blue, amber, green, red)
+- [x] Cards: título, valor (R$ formatado), lead vinculado, responsável, prazo
+- [x] Drag-and-drop entre colunas (estado React local, optimistic UI)
+- [x] Dialog de criação/edição de negócio
+- [x] Contador de cards e soma de valores por coluna
+- [x] Scroll horizontal nas colunas; colunas com altura mínima consistente
 
 **Commit final:** `feat(ui): add Kanban pipeline board with drag-and-drop and mock deals`
 
