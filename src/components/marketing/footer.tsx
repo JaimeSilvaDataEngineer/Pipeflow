@@ -9,12 +9,12 @@ const FOOTER_LINKS = [
 function Footer() {
   return (
     <footer className="border-border/60 border-t">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 py-10 sm:flex-row sm:justify-between">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-10 sm:flex-row sm:justify-between sm:px-6">
         <Link href="/" className="text-foreground text-base font-semibold tracking-tight">
           PipeFlow
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
           {FOOTER_LINKS.map((link) => (
             <Link
               key={link.href}

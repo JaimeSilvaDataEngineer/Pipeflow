@@ -10,7 +10,7 @@ const NAV_LINKS = [
 function Navbar() {
   return (
     <header className="border-border/60 bg-background/80 sticky top-0 z-50 border-b backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="text-foreground text-lg font-semibold tracking-tight">
           PipeFlow
         </Link>
@@ -27,11 +27,13 @@ function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" render={<Link href="/login" />}>
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <Button variant="ghost" className="hidden sm:inline-flex" render={<Link href="/login" />}>
             Entrar
           </Button>
-          <Button render={<Link href="/signup" />}>Começar grátis</Button>
+          <Button size="sm" render={<Link href="/signup" />}>
+            Começar grátis
+          </Button>
         </div>
       </div>
     </header>

@@ -35,7 +35,7 @@ const PLANS = [
 function PricingSection() {
   return (
     <section id="pricing" className="border-border/60 border-t">
-      <div className="mx-auto max-w-6xl px-6 py-20">
+      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <div className="mx-auto mb-12 max-w-xl text-center">
           <h2 className="text-foreground text-3xl font-bold tracking-tight">
             Planos simples, sem pegadinha
@@ -55,12 +55,16 @@ function PricingSection() {
               )}
             >
               <CardHeader>
-                <CardTitle className="flex items-center justify-between text-base">
-                  {plan.name}
-                </CardTitle>
+                <CardTitle className="text-base">{plan.name}</CardTitle>
                 <p className="text-foreground text-3xl font-bold tracking-tight">
-                  {formatCurrency(plan.priceCents)}
-                  <span className="text-muted-foreground text-base font-normal">/mês</span>
+                  {plan.priceCents === 0 ? (
+                    "Grátis"
+                  ) : (
+                    <>
+                      {formatCurrency(plan.priceCents)}
+                      <span className="text-muted-foreground text-base font-normal">/mês</span>
+                    </>
+                  )}
                 </p>
                 <p className="text-muted-foreground text-sm">{plan.description}</p>
               </CardHeader>

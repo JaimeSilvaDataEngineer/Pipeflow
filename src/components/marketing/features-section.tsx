@@ -44,7 +44,7 @@ const FEATURES = [
 
 function FeaturesSection() {
   return (
-    <section id="features" className="mx-auto max-w-6xl px-6 py-20">
+    <section id="features" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
       <div className="mx-auto mb-12 max-w-xl text-center">
         <h2 className="text-foreground text-3xl font-bold tracking-tight">
           Tudo que o seu time de vendas precisa
