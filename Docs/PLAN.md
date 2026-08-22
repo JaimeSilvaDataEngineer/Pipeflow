@@ -20,7 +20,8 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 | M4b | `milestone/04-activities-ui` | UI | Timeline de atividades no lead (mock) |
 | M5a | `milestone/05-landing-ui` | UI | Landing page pública (marketing) |
 | M5b | `milestone/05-settings-billing-ui` | UI | Settings, membros e billing UI |
-| M6 | `milestone/06-supabase-schema` | Backend | Banco, migrations e RLS |
+| M6a | `feat/supabase-core` | Backend | Setup do projeto Supabase e chaves |
+| M6b | `milestone/06-supabase-schema` | Backend | Banco, migrations e RLS |
 | M7 | `milestone/07-auth-workspaces` | Backend | Auth, workspaces e membros |
 | M8 | `milestone/08-leads-backend` | Backend | CRUD de leads com Supabase |
 | M9 | `milestone/09-pipeline-backend` | Backend | Deals e persistência do Kanban |
@@ -191,15 +192,33 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ---
 
-## M6 — Supabase: Schema e RLS
+## M6a — Setup do Projeto Supabase e Chaves
 
-**Branch:** `milestone/06-supabase-schema`
+**Branch:** `feat/supabase-core`
 
-**Objetivo:** Modelar o banco de dados PostgreSQL no Supabase com migrations, políticas RLS e tipos gerados — fundação do backend multi-tenant.
+**Objetivo:** Provisionar o projeto Supabase (cloud) e conectar a aplicação a ele — fundação para as migrations da M6b, sem ainda modelar schema/RLS.
 
 ### Entregas
 
-- [ ] Inicializar Supabase local (`supabase init`, `supabase start`)
+- [ ] Projeto Supabase criado na nuvem (plano free)
+- [ ] `.env.local` configurado com `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (gitignored)
+- [ ] `supabase init` local (linkado ao projeto remoto via `supabase link`)
+- [ ] Instalar `@supabase/supabase-js` e `@supabase/ssr`
+- [ ] Helpers: `createClient` (browser + server) em `src/lib/supabase/`
+- [ ] Smoke test: query trivial confirmando a conexão (ex: `select 1`)
+
+**Commit final:** `feat(supabase): connect app to Supabase project with client helpers`
+
+---
+
+## M6b — Supabase: Schema e RLS
+
+**Branch:** `milestone/06-supabase-schema`
+
+**Objetivo:** Modelar o banco de dados PostgreSQL no Supabase com migrations e políticas RLS — fundação do backend multi-tenant.
+
+### Entregas
+
 - [ ] Migration: `workspaces` (id, name, slug, plan, stripe_customer_id, created_at)
 - [ ] Migration: `workspace_members` (workspace_id, user_id, role: admin|member)
 - [ ] Migration: `leads` (workspace_id, name, email, phone, company, role_title, status, assigned_to, created_at)
@@ -210,7 +229,6 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 - [ ] Policies: isolamento por membership; Admin vs Member (Member sem acesso a billing/settings sensíveis)
 - [ ] Seed script com dados de exemplo
 - [ ] Gerar tipos TS: `src/types/database.ts`
-- [ ] Helpers: `createClient` (browser + server) em `src/lib/supabase/`
 
 **Commit final:** `feat(db): add Supabase schema, RLS policies and generated types`
 
@@ -401,8 +419,9 @@ flowchart LR
   end
 
   subgraph backend [Fase Backend — M6 a M13]
-    M5b --> M6[Schema + RLS]
-    M6 --> M7[Auth]
+    M5b --> M6a[Setup Supabase]
+    M6a --> M6b[Schema + RLS]
+    M6b --> M7[Auth]
     M7 --> M8[Leads]
     M8 --> M9[Pipeline]
     M9 --> M10[Activities]
