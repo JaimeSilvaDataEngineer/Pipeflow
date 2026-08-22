@@ -164,9 +164,9 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Landing page `(marketing)/`: hero, funcionalidades, pricing, CTA
-- [ ] Navbar pública + footer
-- [ ] Links: landing → signup → dashboard mock
+- [x] Landing page `(marketing)/`: hero, funcionalidades, pricing, CTA
+- [x] Navbar pública + footer
+- [x] Links: landing → signup → dashboard mock
 
 **Commit final:** `feat(ui): add public marketing landing page`
 
