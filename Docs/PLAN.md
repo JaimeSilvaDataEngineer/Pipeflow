@@ -16,8 +16,10 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 | M1 | `milestone/01-app-shell` | UI | Layout, sidebar, rotas do dashboard |
 | M2 | `milestone/02-leads-ui` | UI | Listagem, formulário e detalhe de leads |
 | M3 | `milestone/03-pipeline-ui` | UI | Kanban drag-and-drop (mock) |
-| M4 | `milestone/04-activities-dashboard-ui` | UI | Timeline, métricas e funil (mock) |
-| M5 | `milestone/05-settings-landing-ui` | UI | Settings, billing UI e landing page |
+| M4a | `milestone/04-dashboard-ui` | UI | Dashboard de métricas e funil (mock) |
+| M4b | `milestone/04-activities-ui` | UI | Timeline de atividades no lead (mock) |
+| M5a | `milestone/05-landing-ui` | UI | Landing page pública (marketing) |
+| M5b | `milestone/05-settings-billing-ui` | UI | Settings, membros e billing UI |
 | M6 | `milestone/06-supabase-schema` | Backend | Banco, migrations e RLS |
 | M7 | `milestone/07-auth-workspaces` | Backend | Auth, workspaces e membros |
 | M8 | `milestone/08-leads-backend` | Backend | CRUD de leads com Supabase |
@@ -119,11 +121,29 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ---
 
-## M4 — Atividades e Dashboard UI (Mock)
+## M4a — Dashboard de Métricas UI (Mock)
 
-**Branch:** `milestone/04-activities-dashboard-ui`
+**Branch:** `milestone/04-dashboard-ui`
 
-**Objetivo:** Completar as telas de produtividade — timeline de atividades na página do lead e dashboard de métricas com gráfico de funil — ainda com dados estáticos.
+**Objetivo:** Dashboard de métricas de vendas com gráfico de funil, ainda com dados estáticos — depende dos mocks de `Deal`/`PipelineStage` da M3.
+
+### Entregas
+
+- [x] Página Dashboard: 4 metric cards (total leads, negócios abertos, valor pipeline, taxa conversão)
+- [x] Gráfico de funil com Recharts
+- [x] Seção "Negócios com prazo próximo" (lista mock)
+- [x] Componentes reutilizáveis: `MetricCard`, `FunnelChart`
+- [x] Layout responsivo do dashboard (grid 2×2 → 1 coluna mobile)
+
+**Commit final:** `feat(ui): add sales dashboard with metrics and funnel chart (mock data)`
+
+---
+
+## M4b — Timeline de Atividades UI (Mock)
+
+**Branch:** `milestone/04-activities-ui`
+
+**Objetivo:** Timeline de atividades (ligações, e-mails, reuniões, notas) na página de detalhe do lead, ainda com dados estáticos.
 
 ### Entregas
 
@@ -131,21 +151,32 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 - [ ] Mock de atividades vinculadas a leads
 - [ ] Componente `ActivityTimeline` na página de detalhe do lead
 - [ ] Formulário de nova atividade (dialog)
-- [ ] Página Dashboard: 4 metric cards (total leads, negócios abertos, valor pipeline, taxa conversão)
-- [ ] Gráfico de funil com Recharts
-- [ ] Seção "Negócios com prazo próximo" (lista mock)
-- [ ] Componentes reutilizáveis: `MetricCard`, `FunnelChart`
-- [ ] Layout responsivo do dashboard (grid 2×2 → 1 coluna mobile)
 
-**Commit final:** `feat(ui): add activity timeline and sales dashboard with mock metrics`
+**Commit final:** `feat(ui): add activity timeline to lead detail page (mock data)`
 
 ---
 
-## M5 — Settings, Billing UI e Landing Page
+## M5a — Landing Page (Marketing)
 
-**Branch:** `milestone/05-settings-landing-ui`
+**Branch:** `milestone/05-landing-ui`
 
-**Objetivo:** Fechar todas as telas de interface restantes — configurações do workspace, membros, billing e landing page pública — antes de conectar qualquer backend.
+**Objetivo:** Página pública de marketing — a porta de entrada do produto — ainda sem backend.
+
+### Entregas
+
+- [ ] Landing page `(marketing)/`: hero, funcionalidades, pricing, CTA
+- [ ] Navbar pública + footer
+- [ ] Links: landing → signup → dashboard mock
+
+**Commit final:** `feat(ui): add public marketing landing page`
+
+---
+
+## M5b — Settings e Billing UI (Mock)
+
+**Branch:** `milestone/05-settings-billing-ui`
+
+**Objetivo:** Configurações do workspace, membros e billing, ainda com dados estáticos.
 
 ### Entregas
 
@@ -155,11 +186,8 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 - [ ] Dialog de convite por e-mail (UI only)
 - [ ] Página Billing: card do plano atual (Free/Pro), limites, CTA upgrade
 - [ ] Comparativo Free vs Pro conforme PRD (2 membros/50 leads vs ilimitado/R$49)
-- [ ] Landing page `(marketing)/`: hero, funcionalidades, pricing, CTA
-- [ ] Navbar pública + footer
-- [ ] Links: landing → signup → dashboard mock
 
-**Commit final:** `feat(ui): add settings, billing screens and marketing landing page`
+**Commit final:** `feat(ui): add settings, members and billing screens (mock data)`
 
 ---
 
@@ -366,12 +394,14 @@ flowchart LR
     M0[Setup] --> M1[Shell]
     M1 --> M2[Leads UI]
     M2 --> M3[Pipeline UI]
-    M3 --> M4[Dashboard UI]
-    M4 --> M5[Settings + Landing]
+    M3 --> M4a[Dashboard UI]
+    M4a --> M4b[Atividades UI]
+    M4b --> M5a[Landing Page]
+    M5a --> M5b[Settings + Billing]
   end
 
   subgraph backend [Fase Backend — M6 a M13]
-    M5 --> M6[Schema + RLS]
+    M5b --> M6[Schema + RLS]
     M6 --> M7[Auth]
     M7 --> M8[Leads]
     M8 --> M9[Pipeline]
