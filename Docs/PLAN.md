@@ -200,11 +200,11 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Projeto Supabase criado na nuvem (plano free)
-- [ ] `.env.local` configurado com `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (gitignored)
+- [x] Projeto Supabase criado na nuvem (plano free)
+- [x] `.env.local` configurado com `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (gitignored)
 - [ ] `supabase init` local (linkado ao projeto remoto via `supabase link`)
-- [ ] Instalar `@supabase/supabase-js` e `@supabase/ssr`
-- [ ] Helpers: `createClient` (browser + server) em `src/lib/supabase/`
+- [x] Instalar `@supabase/supabase-js` e `@supabase/ssr`
+- [x] Helpers: `createClient` (browser + server) em `src/lib/supabase/`
 - [ ] Smoke test: query trivial confirmando a conexão (ex: `select 1`)
 
 **Commit final:** `feat(supabase): connect app to Supabase project with client helpers`
