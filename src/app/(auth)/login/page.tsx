@@ -11,17 +11,27 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { mockSignIn } from "@/app/(auth)/actions";
+import { login } from "@/app/(auth)/actions";
 
-export default function LoginPage() {
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams: { error?: string; message?: string };
+}) {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Entrar</CardTitle>
         <CardDescription>Acesse o seu workspace do PipeFlow.</CardDescription>
       </CardHeader>
-      <form action={mockSignIn}>
+      <form action={login}>
         <CardContent className="flex flex-col gap-4">
+          {searchParams.message ? (
+            <p className="text-muted-foreground text-sm">{searchParams.message}</p>
+          ) : null}
+          {searchParams.error ? (
+            <p className="text-destructive text-sm">{searchParams.error}</p>
+          ) : null}
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="email">E-mail</Label>
             <Input id="email" name="email" type="email" placeholder="voce@empresa.com" required />

@@ -13,12 +13,21 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import { MOCK_WORKSPACES } from "@/lib/mock/workspace";
+import type { WorkspaceSummary } from "@/types/workspace";
 
-function WorkspaceSwitcher({ workspaceSlug }: { workspaceSlug: string }) {
+function WorkspaceSwitcher({
+  workspaces,
+  activeSlug,
+}: {
+  workspaces: WorkspaceSummary[];
+  activeSlug: string;
+}) {
   const router = useRouter();
-  const active =
-    MOCK_WORKSPACES.find((workspace) => workspace.slug === workspaceSlug) ?? MOCK_WORKSPACES[0];
+  const active = workspaces.find((workspace) => workspace.slug === activeSlug) ?? workspaces[0];
+
+  if (!active) {
+    return null;
+  }
 
   return (
     <DropdownMenu>
@@ -35,7 +44,7 @@ function WorkspaceSwitcher({ workspaceSlug }: { workspaceSlug: string }) {
       />
       <DropdownMenuContent align="start" className="w-64">
         <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
-        {MOCK_WORKSPACES.map((workspace) => (
+        {workspaces.map((workspace) => (
           <DropdownMenuItem
             key={workspace.id}
             onClick={() => router.push(`/${workspace.slug}/dashboard`)}
