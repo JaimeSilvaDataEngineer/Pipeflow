@@ -1,37 +1,37 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const SESSION_COOKIE = "pipeflow_mock_session";
-const DEFAULT_WORKSPACE_SLUG = "acme";
+import { updateSession } from "@/lib/supabase/middleware";
+
 const AUTH_PATHS = ["/login", "/signup"];
 
-// TODO(M7): substituir a checagem de cookie mock pela validação de sessão real do Supabase Auth.
-export function middleware(request: NextRequest) {
-  const isAuthenticated = request.cookies.has(SESSION_COOKIE);
+export async function middleware(request: NextRequest) {
+  const { response, user } = await updateSession(request);
   const { pathname } = request.nextUrl;
   const isAuthPath = AUTH_PATHS.includes(pathname);
 
   if (isAuthPath) {
-    if (isAuthenticated) {
+    if (user) {
       const url = request.nextUrl.clone();
-      url.pathname = `/${DEFAULT_WORKSPACE_SLUG}/dashboard`;
+      url.pathname = "/onboarding";
       return NextResponse.redirect(url);
     }
-    return NextResponse.next();
+    return response;
   }
 
-  if (!isAuthenticated) {
+  if (!user) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
   matcher: [
     "/login",
     "/signup",
+    "/onboarding",
     "/:workspace/dashboard/:path*",
     "/:workspace/leads/:path*",
     "/:workspace/pipeline/:path*",

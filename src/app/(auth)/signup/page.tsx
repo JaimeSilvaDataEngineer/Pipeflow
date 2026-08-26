@@ -11,17 +11,24 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { mockSignIn } from "@/app/(auth)/actions";
+import { signup } from "@/app/(auth)/actions";
 
-export default function SignupPage() {
+export default function SignupPage({
+  searchParams,
+}: {
+  searchParams: { error?: string };
+}) {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Criar conta</CardTitle>
         <CardDescription>Comece grátis, sem cartão de crédito.</CardDescription>
       </CardHeader>
-      <form action={mockSignIn}>
+      <form action={signup}>
         <CardContent className="flex flex-col gap-4">
+          {searchParams.error ? (
+            <p className="text-destructive text-sm">{searchParams.error}</p>
+          ) : null}
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="name">Nome</Label>
             <Input id="name" name="name" placeholder="Seu nome" required />

@@ -11,25 +11,25 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { mockSignOut } from "@/app/(auth)/actions";
-import { MOCK_USER } from "@/lib/mock/workspace";
+import { signOut } from "@/app/(auth)/actions";
+import type { UserSummary } from "@/types/workspace";
 
-function UserMenu({ workspaceSlug }: { workspaceSlug: string }) {
+function UserMenu({ workspaceSlug, user }: { workspaceSlug: string; user: UserSummary }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
           <button className="focus-visible:ring-ring/50 rounded-full outline-none focus-visible:ring-3">
             <Avatar>
-              <AvatarFallback>{MOCK_USER.initials}</AvatarFallback>
+              <AvatarFallback>{user.initials}</AvatarFallback>
             </Avatar>
           </button>
         }
       />
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="flex flex-col gap-0.5 px-2 py-1.5">
-          <span className="text-foreground text-sm font-medium">{MOCK_USER.name}</span>
-          <span className="text-muted-foreground text-xs font-normal">{MOCK_USER.email}</span>
+          <span className="text-foreground text-sm font-medium">{user.name}</span>
+          <span className="text-muted-foreground text-xs font-normal">{user.email}</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem render={<a href={`/${workspaceSlug}/settings`} />}>
@@ -41,7 +41,7 @@ function UserMenu({ workspaceSlug }: { workspaceSlug: string }) {
           Configurações
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onClick={() => mockSignOut()}>
+        <DropdownMenuItem variant="destructive" onClick={() => signOut()}>
           <LogOut />
           Sair
         </DropdownMenuItem>
