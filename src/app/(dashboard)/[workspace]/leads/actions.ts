@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
+import { canAddLead } from "@/lib/limits";
 import { mapLeadRow } from "@/lib/supabase/leads";
 import { createClient } from "@/lib/supabase/server";
 import { getWorkspaceBySlugForCurrentUser } from "@/lib/supabase/workspaces";
@@ -26,6 +27,13 @@ export async function createLead(workspaceSlug: string, values: LeadFormValues):
   }
 
   const { supabase, workspaceId } = await resolveWorkspace(workspaceSlug);
+
+  const { allowed, limit } = await canAddLead(supabase, workspaceId);
+  if (!allowed) {
+    throw new Error(
+      `Limite do plano Free atingido (${limit} leads). Faça upgrade para o Pro para adicionar mais.`,
+    );
+  }
 
   const { data, error } = await supabase
     .from("leads")
