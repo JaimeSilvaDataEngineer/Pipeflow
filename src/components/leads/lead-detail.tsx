@@ -4,11 +4,13 @@ import { ArrowLeftIcon, ClockIcon, PencilIcon } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 
+import { updateLead } from "@/app/(dashboard)/[workspace]/leads/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LeadFormSheet } from "@/components/leads/lead-form-sheet";
 import { LeadStatusBadge } from "@/components/leads/lead-status-badge";
 import { MemberAvatar } from "@/components/leads/member-avatar";
+import type { WorkspaceMember } from "@/lib/supabase/members";
 import type { LeadFormValues } from "@/lib/validations/lead";
 import type { Lead } from "@/types/lead";
 
@@ -16,15 +18,18 @@ const dateFormatter = new Intl.DateTimeFormat("pt-BR", { dateStyle: "long" });
 
 function LeadDetail({
   lead: initialLead,
+  members,
   workspaceSlug,
 }: {
   lead: Lead;
+  members: WorkspaceMember[];
   workspaceSlug: string;
 }) {
   const [lead, setLead] = React.useState(initialLead);
 
-  function handleEdit(values: LeadFormValues) {
-    setLead((current) => ({ ...current, ...values }));
+  async function handleEdit(values: LeadFormValues) {
+    const updated = await updateLead(workspaceSlug, lead.id, values);
+    setLead(updated);
   }
 
   return (
@@ -46,6 +51,7 @@ function LeadDetail({
             </div>
             <LeadFormSheet
               lead={lead}
+              members={members}
               onSubmit={handleEdit}
               trigger={
                 <Button variant="outline" size="icon-sm">
@@ -74,7 +80,7 @@ function LeadDetail({
               <div className="flex flex-col gap-0.5">
                 <dt className="text-muted-foreground">Responsável</dt>
                 <dd>
-                  <MemberAvatar memberId={lead.assignedTo} />
+                  <MemberAvatar memberId={lead.assignedTo} members={members} />
                 </dd>
               </div>
               <div className="flex flex-col gap-0.5">

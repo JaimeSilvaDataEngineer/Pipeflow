@@ -16,6 +16,6 @@ export type Lead = {
   company: string;
   roleTitle: string;
   status: LeadStatus;
-  assignedTo: string;
+  assignedTo: string | null;
   createdAt: string;
 };

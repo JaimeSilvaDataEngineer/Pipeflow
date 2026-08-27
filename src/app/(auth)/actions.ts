@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 
+import { friendlyAuthErrorMessage } from "@/lib/supabase/auth-errors";
 import { createClient } from "@/lib/supabase/server";
 import { getUserWorkspaces } from "@/lib/supabase/workspaces";
 import { loginSchema, signupSchema } from "@/lib/validations/auth";
@@ -37,6 +38,7 @@ export async function signup(formData: FormData) {
     name: formData.get("name"),
     email: formData.get("email"),
     password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
   });
 
   if (!parsed.success) {
@@ -44,17 +46,20 @@ export async function signup(formData: FormData) {
   }
 
   const supabase = await createClient();
+  // No `emailRedirectTo` here — the confirmation link's destination comes
+  // from the Supabase project's "Confirm signup" email template, which
+  // points to /auth/confirm (token_hash/verifyOtp) rather than this app
+  // passing a PKCE redirect URL. See /auth/confirm/route.ts.
   const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
       data: { full_name: parsed.data.name },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
     },
   });
 
   if (error) {
-    redirect(`/signup?error=${encodeURIComponent(error.message)}`);
+    redirect(`/signup?error=${encodeURIComponent(friendlyAuthErrorMessage(error))}`);
   }
 
   // Email confirmation enabled on the project: signUp succeeds but returns

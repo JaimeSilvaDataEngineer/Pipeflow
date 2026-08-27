@@ -1,86 +1,83 @@
 "use client";
 
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
 
+import { createLead } from "@/app/(dashboard)/[workspace]/leads/actions";
 import { LeadsTable } from "@/components/leads/leads-table";
 import { LeadsToolbar, type DateRangeFilter } from "@/components/leads/leads-toolbar";
+import type { WorkspaceMember } from "@/lib/supabase/members";
 import type { LeadFormValues } from "@/lib/validations/lead";
 import type { Lead } from "@/types/lead";
 
-const DATE_RANGE_DAYS: Record<DateRangeFilter, number | null> = {
-  all: null,
-  "7d": 7,
-  "30d": 30,
-};
-
-function matchesDateRange(createdAt: string, range: DateRangeFilter, now: number) {
-  const days = DATE_RANGE_DAYS[range];
-  if (days === null) return true;
-
-  const createdAtMs = new Date(createdAt).getTime();
-  const rangeStartMs = now - days * 24 * 60 * 60 * 1000;
-  return createdAtMs >= rangeStartMs;
-}
+const SEARCH_DEBOUNCE_MS = 300;
 
 function LeadsExplorer({
-  initialLeads,
+  leads,
+  members,
   workspaceSlug,
 }: {
-  initialLeads: Lead[];
+  leads: Lead[];
+  members: WorkspaceMember[];
   workspaceSlug: string;
 }) {
-  const [leads, setLeads] = React.useState(initialLeads);
-  const [search, setSearch] = React.useState("");
-  const [status, setStatus] = React.useState("all");
-  const [assignee, setAssignee] = React.useState("all");
-  const [dateRange, setDateRange] = React.useState<DateRangeFilter>("all");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const filteredLeads = React.useMemo(() => {
-    const now = Date.now();
-    const query = search.trim().toLowerCase();
+  const search = searchParams.get("search") ?? "";
+  const status = searchParams.get("status") ?? "all";
+  const assignee = searchParams.get("assignedTo") ?? "all";
+  const dateRange = (searchParams.get("dateRange") as DateRangeFilter) ?? "all";
 
-    return leads.filter((lead) => {
-      const matchesQuery =
-        query.length === 0 ||
-        lead.name.toLowerCase().includes(query) ||
-        lead.email.toLowerCase().includes(query) ||
-        lead.company.toLowerCase().includes(query);
+  const [searchInput, setSearchInput] = React.useState(search);
 
-      const matchesStatus = status === "all" || lead.status === status;
-      const matchesAssignee = assignee === "all" || lead.assignedTo === assignee;
+  function pushParams(next: Record<string, string>) {
+    const params = new URLSearchParams(searchParams.toString());
+    for (const [key, value] of Object.entries(next)) {
+      if (value === "all" || value === "") {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
+    }
+    router.push(`${pathname}?${params.toString()}`);
+  }
 
-      return (
-        matchesQuery &&
-        matchesStatus &&
-        matchesAssignee &&
-        matchesDateRange(lead.createdAt, dateRange, now)
-      );
-    });
-  }, [leads, search, status, assignee, dateRange]);
+  function handleSearchChange(value: string) {
+    setSearchInput(value);
+  }
 
-  function handleCreate(values: LeadFormValues) {
-    const newLead: Lead = {
-      id: `lead_${crypto.randomUUID()}`,
-      createdAt: new Date().toISOString(),
-      ...values,
-    };
-    setLeads((current) => [newLead, ...current]);
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (searchInput !== search) {
+        pushParams({ search: searchInput });
+      }
+    }, SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput]);
+
+  async function handleCreate(values: LeadFormValues) {
+    await createLead(workspaceSlug, values);
+    router.refresh();
   }
 
   return (
     <div className="flex flex-col gap-4">
       <LeadsToolbar
-        search={search}
-        onSearchChange={setSearch}
+        search={searchInput}
+        onSearchChange={handleSearchChange}
         status={status}
-        onStatusChange={setStatus}
+        onStatusChange={(value) => pushParams({ status: value })}
         assignee={assignee}
-        onAssigneeChange={setAssignee}
+        onAssigneeChange={(value) => pushParams({ assignedTo: value })}
         dateRange={dateRange}
-        onDateRangeChange={setDateRange}
+        onDateRangeChange={(value) => pushParams({ dateRange: value })}
+        members={members}
         onCreate={handleCreate}
       />
-      <LeadsTable leads={filteredLeads} workspaceSlug={workspaceSlug} />
+      <LeadsTable leads={leads} members={members} workspaceSlug={workspaceSlug} />
     </div>
   );
 }

@@ -9,15 +9,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PIPELINE_STAGE_COLORS, type PipelineStageId } from "@/lib/constants/pipeline";
 import { formatCurrency } from "@/lib/formatCurrency";
+import type { WorkspaceMember } from "@/lib/supabase/members";
 import { cn } from "@/lib/utils";
 import type { DealFormValues } from "@/lib/validations/deal";
 import type { Deal } from "@/types/deal";
+import type { Lead } from "@/types/lead";
 
 function PipelineColumn({
   stageId,
   label,
   color,
   deals,
+  leads,
+  members,
   onCreate,
   onEdit,
 }: {
@@ -25,8 +29,10 @@ function PipelineColumn({
   label: string;
   color: keyof typeof PIPELINE_STAGE_COLORS;
   deals: Deal[];
-  onCreate: (values: DealFormValues) => void;
-  onEdit: (dealId: string, values: DealFormValues) => void;
+  leads: Lead[];
+  members: WorkspaceMember[];
+  onCreate: (values: DealFormValues) => Promise<void>;
+  onEdit: (dealId: string, values: DealFormValues) => Promise<void>;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: stageId });
 
@@ -44,6 +50,8 @@ function PipelineColumn({
         </div>
         <DealFormDialog
           defaultStageId={stageId}
+          leads={leads}
+          members={members}
           onSubmit={onCreate}
           trigger={
             <Button variant="ghost" size="icon" className="size-6 shrink-0">
@@ -65,7 +73,7 @@ function PipelineColumn({
         )}
       >
         {deals.map((deal) => (
-          <DealCard key={deal.id} deal={deal} onEdit={onEdit} />
+          <DealCard key={deal.id} deal={deal} leads={leads} members={members} onEdit={onEdit} />
         ))}
         {deals.length === 0 && (
           <p className="text-muted-foreground p-2 text-center text-xs">Nenhum negócio</p>

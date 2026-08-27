@@ -8,19 +8,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PIPELINE_STAGES } from "@/lib/constants/pipeline";
-import { MOCK_LEADS } from "@/lib/mock/leads";
-import { MOCK_MEMBERS } from "@/lib/mock/members";
+import type { WorkspaceMember } from "@/lib/supabase/members";
 import type { DealFormValues } from "@/lib/validations/deal";
+import type { Lead } from "@/types/lead";
 
 type DealFormErrors = Partial<Record<keyof DealFormValues, string>>;
 
 function DealForm({
   values,
   errors,
+  leads,
+  members,
   onChange,
 }: {
   values: DealFormValues;
   errors: DealFormErrors;
+  leads: Lead[];
+  members: WorkspaceMember[];
   onChange: <K extends keyof DealFormValues>(field: K, value: DealFormValues[K]) => void;
 }) {
   return (
@@ -70,11 +74,11 @@ function DealForm({
           <Select value={values.leadId} onValueChange={(value) => onChange("leadId", value ?? "")}>
             <SelectTrigger id="deal-lead" className="w-full">
               <SelectValue placeholder="Selecione">
-                {(value: string) => MOCK_LEADS.find((lead) => lead.id === value)?.name}
+                {(value: string) => leads.find((lead) => lead.id === value)?.name}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {MOCK_LEADS.map((lead) => (
+              {leads.map((lead) => (
                 <SelectItem key={lead.id} value={lead.id}>
                   {lead.name} — {lead.company}
                 </SelectItem>
@@ -92,11 +96,11 @@ function DealForm({
           >
             <SelectTrigger id="deal-assignee" className="w-full">
               <SelectValue placeholder="Selecione">
-                {(value: string) => MOCK_MEMBERS.find((member) => member.id === value)?.name}
+                {(value: string) => members.find((member) => member.id === value)?.name}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {MOCK_MEMBERS.map((member) => (
+              {members.map((member) => (
                 <SelectItem key={member.id} value={member.id}>
                   {member.name}
                 </SelectItem>

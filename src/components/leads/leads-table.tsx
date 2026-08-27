@@ -13,11 +13,20 @@ import {
 } from "@/components/ui/table";
 import { LeadStatusBadge } from "@/components/leads/lead-status-badge";
 import { MemberAvatar } from "@/components/leads/member-avatar";
+import type { WorkspaceMember } from "@/lib/supabase/members";
 import type { Lead } from "@/types/lead";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", { dateStyle: "medium" });
 
-function LeadsTable({ leads, workspaceSlug }: { leads: Lead[]; workspaceSlug: string }) {
+function LeadsTable({
+  leads,
+  members,
+  workspaceSlug,
+}: {
+  leads: Lead[];
+  members: WorkspaceMember[];
+  workspaceSlug: string;
+}) {
   const router = useRouter();
 
   if (leads.length === 0) {
@@ -59,7 +68,7 @@ function LeadsTable({ leads, workspaceSlug }: { leads: Lead[]; workspaceSlug: st
                 <LeadStatusBadge status={lead.status} />
               </TableCell>
               <TableCell>
-                <MemberAvatar memberId={lead.assignedTo} />
+                <MemberAvatar memberId={lead.assignedTo} members={members} />
               </TableCell>
               <TableCell className="text-muted-foreground">
                 {dateFormatter.format(new Date(lead.createdAt))}

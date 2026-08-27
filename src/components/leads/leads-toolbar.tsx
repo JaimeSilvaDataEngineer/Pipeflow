@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LeadFormSheet } from "@/components/leads/lead-form-sheet";
-import { MOCK_MEMBERS } from "@/lib/mock/members";
+import type { WorkspaceMember } from "@/lib/supabase/members";
 import type { LeadFormValues } from "@/lib/validations/lead";
 import { LEAD_STATUSES } from "@/types/lead";
 
@@ -29,11 +29,6 @@ const STATUS_LABELS: Record<string, string> = {
   ...Object.fromEntries(LEAD_STATUSES.map((item) => [item.id, item.label])),
 };
 
-const ASSIGNEE_LABELS: Record<string, string> = {
-  all: "Todos os responsáveis",
-  ...Object.fromEntries(MOCK_MEMBERS.map((member) => [member.id, member.name])),
-};
-
 const DATE_RANGE_LABELS: Record<string, string> = Object.fromEntries(
   DATE_RANGE_OPTIONS.map((option) => [option.id, option.label]),
 );
@@ -47,6 +42,7 @@ function LeadsToolbar({
   onAssigneeChange,
   dateRange,
   onDateRangeChange,
+  members,
   onCreate,
 }: {
   search: string;
@@ -57,8 +53,14 @@ function LeadsToolbar({
   onAssigneeChange: (value: string) => void;
   dateRange: DateRangeFilter;
   onDateRangeChange: (value: DateRangeFilter) => void;
-  onCreate: (values: LeadFormValues) => void;
+  members: WorkspaceMember[];
+  onCreate: (values: LeadFormValues) => Promise<void>;
 }) {
+  const assigneeLabels: Record<string, string> = {
+    all: "Todos os responsáveis",
+    ...Object.fromEntries(members.map((member) => [member.id, member.name])),
+  };
+
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center">
@@ -88,11 +90,11 @@ function LeadsToolbar({
 
         <Select value={assignee} onValueChange={(value) => onAssigneeChange(value ?? "all")}>
           <SelectTrigger className="w-full sm:w-44">
-            <SelectValue>{(value: string) => ASSIGNEE_LABELS[value] ?? value}</SelectValue>
+            <SelectValue>{(value: string) => assigneeLabels[value] ?? value}</SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos os responsáveis</SelectItem>
-            {MOCK_MEMBERS.map((member) => (
+            {members.map((member) => (
               <SelectItem key={member.id} value={member.id}>
                 {member.name}
               </SelectItem>
@@ -119,6 +121,7 @@ function LeadsToolbar({
 
       <LeadFormSheet
         onSubmit={onCreate}
+        members={members}
         trigger={
           <Button>
             <PlusIcon />

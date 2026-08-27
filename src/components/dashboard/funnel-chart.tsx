@@ -3,7 +3,7 @@
 import { Cell, Funnel, FunnelChart as RechartsFunnelChart, LabelList, ResponsiveContainer, Tooltip } from "recharts";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { FunnelStageData } from "@/lib/mock/dashboard";
+import type { FunnelStageData } from "@/lib/supabase/dashboard";
 
 const FUNNEL_COLORS: Record<string, string> = {
   novo_lead: "#94a3b8",
