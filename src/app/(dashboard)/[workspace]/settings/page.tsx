@@ -1,13 +1,5 @@
-import { Settings } from "lucide-react";
+import { redirect } from "next/navigation";
 
-import { PlaceholderPage } from "@/components/dashboard/placeholder-page";
-
-export default function SettingsPage() {
-  return (
-    <PlaceholderPage
-      icon={Settings}
-      title="Settings"
-      description="Workspace, membros e billing chegam na M5."
-    />
-  );
+export default function SettingsPage({ params }: { params: { workspace: string } }) {
+  redirect(`/${params.workspace}/settings/billing`);
 }

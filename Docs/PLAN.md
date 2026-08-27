@@ -186,7 +186,7 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 - [ ] Lista de membros com badges Admin/Membro + botão convidar (UI only)
 - [ ] Dialog de convite por e-mail (UI only)
 - [ ] Página Billing: card do plano atual (Free/Pro), limites, CTA upgrade
-- [ ] Comparativo Free vs Pro conforme PRD (2 membros/50 leads vs ilimitado/R$49)
+- [ ] Comparativo Free vs Pro conforme PRD (2 membros/50 leads vs ilimitado/R$50)
 
 **Commit final:** `feat(ui): add settings, members and billing screens (mock data)`
 
@@ -346,7 +346,7 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Configurar produto/preço Pro (R$49/mês) no Stripe
+- [x] Configurar produto/preço Pro (R$50/mês) no Stripe
 - [ ] Helpers Stripe em `src/lib/stripe/` (Checkout Session, Customer Portal)
 - [ ] Server Action: iniciar Checkout Pro
 - [ ] Botão upgrade na página Billing funcional
