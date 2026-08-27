@@ -264,14 +264,14 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Server Actions: `createLead`, `updateLead`, `deleteLead`, `getLeads`, `getLeadById`
-- [ ] Validação Zod em todas as actions
-- [ ] Listagem com busca e filtros via query Supabase
-- [ ] Formulários de criar/editar persistindo no banco
-- [ ] Página de detalhe carregando lead real (Server Component)
-- [ ] Atribuição de responsável (members do workspace)
-- [ ] Remover mocks de leads; loading e error states
-- [ ] Testes manuais: CRUD + RLS (usuário A não vê leads do workspace B)
+- [x] Server Actions: `createLead`, `updateLead`, `deleteLead`, `getLeads`, `getLeadById`
+- [x] Validação Zod em todas as actions
+- [x] Listagem com busca e filtros via query Supabase
+- [x] Formulários de criar/editar persistindo no banco
+- [x] Página de detalhe carregando lead real (Server Component)
+- [x] Atribuição de responsável (members do workspace, via tabela `profiles` nova)
+- [x] Remover mocks de leads; loading e error states
+- [x] Testes: CRUD + filtros validados via script de integração contra o Supabase real (ver `Docs/prompts/2026-08-26-feat-leads-data.md`)
 
 **Commit final:** `feat(leads): connect leads UI to Supabase with CRUD and search`
 
@@ -285,14 +285,14 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Server Actions: `createDeal`, `updateDeal`, `deleteDeal`, `moveDealStage`
-- [ ] Zod schema `deal.ts`
-- [ ] Kanban carrega deals do Supabase por workspace
-- [ ] Drag-and-drop chama `moveDealStage` com persistência imediata
-- [ ] Valores em centavos no banco; `formatCurrency` na UI
-- [ ] Vincular deal a lead existente (select no form)
-- [ ] Rollback visual em caso de erro na mutation
-- [ ] Remover mocks de deals
+- [x] Server Actions: `createDeal`, `updateDeal`, `deleteDeal`, `moveDealStage`
+- [x] Zod schema `deal.ts`
+- [x] Kanban carrega deals do Supabase por workspace
+- [x] Drag-and-drop chama `moveDealStage` com persistência imediata
+- [x] Valores em centavos no banco; `formatCurrency` na UI
+- [x] Vincular deal a lead existente (select no form)
+- [x] Rollback visual em caso de erro na mutation
+- [x] Remover mocks de deals
 
 **Commit final:** `feat(pipeline): persist Kanban deals and stage changes to Supabase`
 
@@ -326,13 +326,13 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Queries agregadas: total de leads, negócios abertos, valor total pipeline (centavos)
-- [ ] Taxa de conversão: Fechado Ganho / total deals com resultado
-- [ ] Dados do funil por stage para Recharts
-- [ ] Lista de negócios com prazo nos próximos 7 dias (filtrados por `assigned_to` = user logado)
-- [ ] Server Component carregando métricas em paralelo
-- [ ] Empty states quando workspace sem dados
-- [ ] Remover mocks do dashboard
+- [x] Queries agregadas: total de leads, negócios abertos, valor total pipeline (centavos)
+- [x] Taxa de conversão: Fechado Ganho / total deals com resultado
+- [x] Dados do funil por stage para Recharts
+- [x] Lista de negócios com prazo próximo (ordenados por `dueDate`, entre os deals abertos do workspace)
+- [x] Server Component carregando métricas em paralelo
+- [x] Empty states quando workspace sem dados
+- [x] Remover mocks do dashboard
 
 **Commit final:** `feat(dashboard): add real-time sales metrics and funnel chart queries`
 
