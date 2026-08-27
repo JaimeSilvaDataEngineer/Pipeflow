@@ -39,3 +39,21 @@ export async function getWorkspaceBySlugForCurrentUser(
 
   return data;
 }
+
+// Billing is Admin-only per the PRD role model — callers that gate a
+// billing action must check this server-side (never trust the UI alone,
+// which only hides the button for non-admins).
+export async function getCurrentUserRole(
+  supabase: SupabaseClient<Database>,
+  workspaceId: string,
+  userId: string,
+): Promise<"admin" | "member" | null> {
+  const { data } = await supabase
+    .from("workspace_members")
+    .select("role")
+    .eq("workspace_id", workspaceId)
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  return (data?.role as "admin" | "member" | undefined) ?? null;
+}
