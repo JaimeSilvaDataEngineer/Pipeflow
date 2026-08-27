@@ -1,19 +1,27 @@
 import { notFound } from "next/navigation";
 
 import { LeadDetail } from "@/components/leads/lead-detail";
-import { mockDelay } from "@/lib/mock/delay";
-import { getLeadById } from "@/lib/mock/leads";
+import { getWorkspaceMembers } from "@/lib/supabase/members";
+import { createClient } from "@/lib/supabase/server";
+import { getLeadById } from "@/lib/supabase/leads";
+import { getWorkspaceBySlugForCurrentUser } from "@/lib/supabase/workspaces";
 
 export default async function LeadDetailPage({
   params,
 }: {
   params: { workspace: string; id: string };
 }) {
-  await mockDelay();
+  const supabase = await createClient();
+  const workspace = await getWorkspaceBySlugForCurrentUser(supabase, params.workspace);
 
-  const lead = getLeadById(params.id);
+  if (!workspace) notFound();
+
+  const [lead, members] = await Promise.all([
+    getLeadById(supabase, workspace.id, params.id),
+    getWorkspaceMembers(supabase, workspace.id),
+  ]);
 
   if (!lead) notFound();
 
-  return <LeadDetail lead={lead} workspaceSlug={params.workspace} />;
+  return <LeadDetail lead={lead} members={members} workspaceSlug={params.workspace} />;
 }

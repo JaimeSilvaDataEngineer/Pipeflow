@@ -1,18 +1,32 @@
+import { notFound } from "next/navigation";
 import { BriefcaseIcon, TrendingUpIcon, UsersIcon, WalletIcon } from "lucide-react";
 
 import { FunnelChart } from "@/components/dashboard/funnel-chart";
 import { MetricCard } from "@/components/dashboard/metric-card";
 import { UpcomingDealsTable } from "@/components/dashboard/upcoming-deals-table";
 import { formatCurrency } from "@/lib/formatCurrency";
-import { getDashboardMetrics, getFunnelData, getUpcomingDeals } from "@/lib/mock/dashboard";
-import { mockDelay } from "@/lib/mock/delay";
+import { getDashboardData } from "@/lib/supabase/dashboard";
+import { getLeadsByIds } from "@/lib/supabase/leads";
+import { getWorkspaceMembers } from "@/lib/supabase/members";
+import { createClient } from "@/lib/supabase/server";
+import { getWorkspaceBySlugForCurrentUser } from "@/lib/supabase/workspaces";
 
-export default async function DashboardPage() {
-  await mockDelay();
+export default async function DashboardPage({ params }: { params: { workspace: string } }) {
+  const supabase = await createClient();
+  const workspace = await getWorkspaceBySlugForCurrentUser(supabase, params.workspace);
 
-  const metrics = getDashboardMetrics();
-  const funnelData = getFunnelData();
-  const upcomingDeals = getUpcomingDeals();
+  if (!workspace) notFound();
+
+  const { metrics, funnelData, upcomingDeals } = await getDashboardData(supabase, workspace.id);
+
+  const upcomingLeadIds = Array.from(
+    new Set(upcomingDeals.map((deal) => deal.leadId).filter((id): id is string => id !== null)),
+  );
+
+  const [leads, members] = await Promise.all([
+    getLeadsByIds(supabase, workspace.id, upcomingLeadIds),
+    getWorkspaceMembers(supabase, workspace.id),
+  ]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -36,7 +50,7 @@ export default async function DashboardPage() {
       </div>
 
       <FunnelChart data={funnelData} />
-      <UpcomingDealsTable deals={upcomingDeals} />
+      <UpcomingDealsTable deals={upcomingDeals} leads={leads} members={members} />
     </div>
   );
 }

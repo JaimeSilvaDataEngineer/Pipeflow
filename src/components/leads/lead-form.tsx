@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MOCK_MEMBERS } from "@/lib/mock/members";
+import type { WorkspaceMember } from "@/lib/supabase/members";
 import type { LeadFormValues } from "@/lib/validations/lead";
 import { LEAD_STATUSES } from "@/types/lead";
 
@@ -16,10 +16,12 @@ type LeadFormErrors = Partial<Record<keyof LeadFormValues, string>>;
 function LeadForm({
   values,
   errors,
+  members,
   onChange,
 }: {
   values: LeadFormValues;
   errors: LeadFormErrors;
+  members: WorkspaceMember[];
   onChange: <K extends keyof LeadFormValues>(field: K, value: LeadFormValues[K]) => void;
 }) {
   return (
@@ -117,11 +119,11 @@ function LeadForm({
           >
             <SelectTrigger id="lead-assignee" className="w-full">
               <SelectValue placeholder="Selecione">
-                {(value: string) => MOCK_MEMBERS.find((member) => member.id === value)?.name}
+                {(value: string) => members.find((member) => member.id === value)?.name}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {MOCK_MEMBERS.map((member) => (
+              {members.map((member) => (
                 <SelectItem key={member.id} value={member.id}>
                   {member.name}
                 </SelectItem>

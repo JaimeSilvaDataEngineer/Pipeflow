@@ -7,10 +7,11 @@ import { DealFormDialog } from "@/components/kanban/deal-form-dialog";
 import { MemberAvatar } from "@/components/leads/member-avatar";
 import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/formatCurrency";
-import { getLeadById } from "@/lib/mock/leads";
+import type { WorkspaceMember } from "@/lib/supabase/members";
 import { cn } from "@/lib/utils";
 import type { DealFormValues } from "@/lib/validations/deal";
 import type { Deal } from "@/types/deal";
+import type { Lead } from "@/types/lead";
 
 function formatDueDate(dueDate: string) {
   return new Intl.DateTimeFormat("pt-BR", {
@@ -22,16 +23,20 @@ function formatDueDate(dueDate: string) {
 
 function DealCard({
   deal,
+  leads,
+  members,
   onEdit,
 }: {
   deal: Deal;
-  onEdit: (dealId: string, values: DealFormValues) => void;
+  leads: Lead[];
+  members: WorkspaceMember[];
+  onEdit: (dealId: string, values: DealFormValues) => Promise<void>;
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: deal.id,
     data: { deal },
   });
-  const lead = getLeadById(deal.leadId);
+  const lead = leads.find((item) => item.id === deal.leadId);
 
   return (
     <div
@@ -47,6 +52,8 @@ function DealCard({
     >
       <DealFormDialog
         deal={deal}
+        leads={leads}
+        members={members}
         onSubmit={(values) => onEdit(deal.id, values)}
         trigger={
           <Card className="cursor-grab gap-2 p-3 shadow-sm active:cursor-grabbing">
@@ -56,11 +63,13 @@ function DealCard({
             </p>
             {lead && <p className="text-muted-foreground truncate text-xs">{lead.company}</p>}
             <div className="mt-1 flex items-center justify-between">
-              <MemberAvatar memberId={deal.assignedTo} className="size-5 text-xs" />
-              <span className="text-muted-foreground flex items-center gap-1 text-xs">
-                <CalendarIcon className="size-3" />
-                {formatDueDate(deal.dueDate)}
-              </span>
+              <MemberAvatar memberId={deal.assignedTo} members={members} className="size-5 text-xs" />
+              {deal.dueDate && (
+                <span className="text-muted-foreground flex items-center gap-1 text-xs">
+                  <CalendarIcon className="size-3" />
+                  {formatDueDate(deal.dueDate)}
+                </span>
+              )}
             </div>
           </Card>
         }

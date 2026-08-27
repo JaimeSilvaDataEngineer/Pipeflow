@@ -9,9 +9,10 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/formatCurrency";
-import { getLeadById } from "@/lib/mock/leads";
+import type { WorkspaceMember } from "@/lib/supabase/members";
 import { cn } from "@/lib/utils";
 import type { Deal } from "@/types/deal";
+import type { Lead } from "@/types/lead";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
   day: "2-digit",
@@ -26,7 +27,15 @@ function dueDateClassName(dueDate: string, now: number) {
   return "text-muted-foreground";
 }
 
-function UpcomingDealsTable({ deals }: { deals: Deal[] }) {
+function UpcomingDealsTable({
+  deals,
+  leads,
+  members,
+}: {
+  deals: Deal[];
+  leads: Lead[];
+  members: WorkspaceMember[];
+}) {
   const now = Date.now();
 
   return (
@@ -52,7 +61,7 @@ function UpcomingDealsTable({ deals }: { deals: Deal[] }) {
             </TableHeader>
             <TableBody>
               {deals.map((deal) => {
-                const lead = getLeadById(deal.leadId);
+                const lead = leads.find((item) => item.id === deal.leadId);
                 return (
                   <TableRow key={deal.id}>
                     <TableCell className="font-medium">{deal.title}</TableCell>
@@ -61,12 +70,12 @@ function UpcomingDealsTable({ deals }: { deals: Deal[] }) {
                     </TableCell>
                     <TableCell>{formatCurrency(deal.valueCents)}</TableCell>
                     <TableCell>
-                      <MemberAvatar memberId={deal.assignedTo} />
+                      <MemberAvatar memberId={deal.assignedTo} members={members} />
                     </TableCell>
                     <TableCell
-                      className={cn("text-right", dueDateClassName(deal.dueDate, now))}
+                      className={cn("text-right", deal.dueDate ? dueDateClassName(deal.dueDate, now) : "text-muted-foreground")}
                     >
-                      {dateFormatter.format(new Date(deal.dueDate))}
+                      {deal.dueDate ? dateFormatter.format(new Date(deal.dueDate)) : "—"}
                     </TableCell>
                   </TableRow>
                 );

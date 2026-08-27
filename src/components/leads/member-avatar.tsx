@@ -1,9 +1,17 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { getMemberById } from "@/lib/mock/members";
 import { cn } from "@/lib/utils";
+import type { WorkspaceMember } from "@/lib/supabase/members";
 
-function MemberAvatar({ memberId, className }: { memberId: string; className?: string }) {
-  const member = getMemberById(memberId);
+function MemberAvatar({
+  memberId,
+  members,
+  className,
+}: {
+  memberId: string | null;
+  members: WorkspaceMember[];
+  className?: string;
+}) {
+  const member = members.find((item) => item.id === memberId);
 
   return (
     <div className="flex items-center gap-2">

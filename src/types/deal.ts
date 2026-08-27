@@ -5,8 +5,8 @@ export type Deal = {
   title: string;
   valueCents: number;
   stageId: PipelineStageId;
-  leadId: string;
-  assignedTo: string;
-  dueDate: string;
+  leadId: string | null;
+  assignedTo: string | null;
+  dueDate: string | null;
   createdAt: string;
 };
