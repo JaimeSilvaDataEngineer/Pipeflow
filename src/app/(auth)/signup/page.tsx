@@ -41,6 +41,16 @@ export default function SignupPage({
             <Label htmlFor="password">Senha</Label>
             <Input id="password" name="password" type="password" placeholder="••••••••" required />
           </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="confirmPassword">Confirmar senha</Label>
+            <Input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder="••••••••"
+              required
+            />
+          </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
           <Button type="submit" className="w-full">
