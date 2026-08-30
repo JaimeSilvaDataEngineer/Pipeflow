@@ -219,6 +219,50 @@ export type Database = {
           },
         ]
       }
+      workspace_invites: {
+        Row: {
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invited_by: string | null
+          role: string
+          status: string
+          token: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          invited_by?: string | null
+          role?: string
+          status?: string
+          token?: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          invited_by?: string | null
+          role?: string
+          status?: string
+          token?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_invites_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workspace_members: {
         Row: {
           created_at: string
@@ -280,6 +324,23 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      accept_workspace_invite: {
+        Args: { p_token: string }
+        Returns: {
+          created_at: string
+          id: string
+          name: string
+          plan: string
+          slug: string
+          stripe_customer_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "workspaces"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       create_workspace_with_admin: {
         Args: { p_name: string; p_slug: string }
         Returns: {
@@ -296,6 +357,16 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      get_invite_by_token: {
+        Args: { p_token: string }
+        Returns: {
+          workspace_name: string
+          email: string
+          role: string
+          status: string
+          expires_at: string
+        }[]
       }
       is_workspace_admin: { Args: { p_workspace_id: string }; Returns: boolean }
       is_workspace_member: {
