@@ -16,8 +16,12 @@ import { signup } from "@/app/(auth)/actions";
 export default function SignupPage({
   searchParams,
 }: {
-  searchParams: { error?: string };
+  searchParams: { error?: string; next?: string };
 }) {
+  const loginHref = searchParams.next
+    ? `/login?next=${encodeURIComponent(searchParams.next)}`
+    : "/login";
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
@@ -26,6 +30,9 @@ export default function SignupPage({
       </CardHeader>
       <form action={signup}>
         <CardContent className="flex flex-col gap-4">
+          {searchParams.next ? (
+            <input type="hidden" name="next" value={searchParams.next} />
+          ) : null}
           {searchParams.error ? (
             <p className="text-destructive text-sm">{searchParams.error}</p>
           ) : null}
@@ -58,7 +65,7 @@ export default function SignupPage({
           </Button>
           <p className="text-muted-foreground text-center text-sm">
             Já tem conta?{" "}
-            <Link href="/login" className="text-primary hover:underline">
+            <Link href={loginHref} className="text-primary hover:underline">
               Entrar
             </Link>
           </p>

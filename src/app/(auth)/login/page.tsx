@@ -16,8 +16,12 @@ import { login } from "@/app/(auth)/actions";
 export default function LoginPage({
   searchParams,
 }: {
-  searchParams: { error?: string; message?: string };
+  searchParams: { error?: string; message?: string; next?: string };
 }) {
+  const signupHref = searchParams.next
+    ? `/signup?next=${encodeURIComponent(searchParams.next)}`
+    : "/signup";
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
@@ -26,6 +30,9 @@ export default function LoginPage({
       </CardHeader>
       <form action={login}>
         <CardContent className="flex flex-col gap-4">
+          {searchParams.next ? (
+            <input type="hidden" name="next" value={searchParams.next} />
+          ) : null}
           {searchParams.message ? (
             <p className="text-muted-foreground text-sm">{searchParams.message}</p>
           ) : null}
@@ -47,7 +54,7 @@ export default function LoginPage({
           </Button>
           <p className="text-muted-foreground text-center text-sm">
             Não tem conta?{" "}
-            <Link href="/signup" className="text-primary hover:underline">
+            <Link href={signupHref} className="text-primary hover:underline">
               Criar conta
             </Link>
           </p>
