@@ -347,14 +347,14 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 ### Entregas
 
 - [x] Configurar produto/preço Pro (R$50/mês) no Stripe
-- [ ] Helpers Stripe em `src/lib/stripe/` (Checkout Session, Customer Portal)
-- [ ] Server Action: iniciar Checkout Pro
-- [ ] Botão upgrade na página Billing funcional
-- [ ] Edge Function: webhook Stripe (`checkout.session.completed`, `customer.subscription.deleted`)
-- [ ] Atualizar `workspaces.plan` no Supabase via webhook
+- [x] Helpers Stripe em `src/lib/stripe/` (Checkout Session, Customer Portal)
+- [x] Server Action: iniciar Checkout Pro
+- [x] Botão upgrade na página Billing funcional
+- [x] Webhook Stripe (`checkout.session.completed`, `customer.subscription.deleted`, `invoice.payment_failed`) — implementado como Route Handler (`src/app/api/webhooks/stripe/route.ts`) em vez de Edge Function, mesmo efeito
+- [x] Atualizar `workspaces.plan` no Supabase via webhook
 - [ ] Enforcement server-side: Free max 2 membros, 50 leads
 - [ ] Mensagens de limite atingido na UI (convite e criação de lead)
-- [ ] Customer Portal link para gerenciar assinatura
+- [x] Customer Portal link para gerenciar assinatura
 
 **Commit final:** `feat(billing): integrate Stripe Checkout, webhooks and Free plan limits`
 
