@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/auth/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -44,14 +44,17 @@ export default function LoginPage({
             <Input id="email" name="email" type="email" placeholder="voce@empresa.com" required />
           </div>
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="password">Senha</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">Senha</Label>
+              <Link href="/forgot-password" className="text-primary text-sm hover:underline">
+                Esqueceu a senha?
+              </Link>
+            </div>
             <Input id="password" name="password" type="password" placeholder="••••••••" required />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
-          <Button type="submit" className="w-full">
-            Entrar
-          </Button>
+          <SubmitButton className="w-full">Entrar</SubmitButton>
           <p className="text-muted-foreground text-center text-sm">
             Não tem conta?{" "}
             <Link href={signupHref} className="text-primary hover:underline">

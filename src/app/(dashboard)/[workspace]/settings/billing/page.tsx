@@ -104,7 +104,7 @@ export default async function BillingPage({
               </form>
             ) : (
               <form action={createCheckoutSession.bind(null, workspace.slug)}>
-                <Button type="submit">Assinar Pro — R$50/mês</Button>
+                <Button type="submit">Assinar Pro — R$49/mês</Button>
               </form>
             )}
           </CardFooter>
@@ -137,7 +137,7 @@ export default async function BillingPage({
 
         <Card className={cn(isPro && "border-primary")}>
           <CardHeader>
-            <CardTitle className="text-base">Pro — R$50/mês</CardTitle>
+            <CardTitle className="text-base">Pro — R$49/mês</CardTitle>
             <CardDescription>Para times em crescimento</CardDescription>
           </CardHeader>
           <CardContent>

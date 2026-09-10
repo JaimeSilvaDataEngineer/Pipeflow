@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 const SETTINGS_TABS = [
   { href: "members", label: "Membros" },
-  { href: "billing", label: "Billing" },
+  { href: "billing", label: "Assinatura" },
 ] as const;
 
 function SettingsNav({ workspaceSlug }: { workspaceSlug: string }) {

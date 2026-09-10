@@ -5,7 +5,12 @@ import { redirect } from "next/navigation";
 import { friendlyAuthErrorMessage } from "@/lib/supabase/auth-errors";
 import { createClient } from "@/lib/supabase/server";
 import { getUserWorkspaces } from "@/lib/supabase/workspaces";
-import { loginSchema, signupSchema } from "@/lib/validations/auth";
+import {
+  forgotPasswordSchema,
+  loginSchema,
+  resetPasswordSchema,
+  signupSchema,
+} from "@/lib/validations/auth";
 
 // Only follow `next` when it's a same-app relative path — an absolute or
 // protocol-relative ("//host") value could redirect the user off PipeFlow
@@ -34,6 +39,7 @@ export async function login(formData: FormData) {
   const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
 
   if (error || !data.user) {
+    if (error) console.error("signInWithPassword failed:", error.code, error.message);
     redirect(`/login?error=${encodeURIComponent("E-mail ou senha inválidos")}${nextParam}`);
   }
 
@@ -79,6 +85,7 @@ export async function signup(formData: FormData) {
   });
 
   if (error) {
+    console.error("signUp failed:", error.code, error.message);
     redirect(`/signup?error=${encodeURIComponent(friendlyAuthErrorMessage(error))}${nextParam}`);
   }
 
@@ -95,6 +102,67 @@ export async function signup(formData: FormData) {
   }
 
   redirect("/onboarding");
+}
+
+export async function requestPasswordReset(formData: FormData) {
+  const parsed = forgotPasswordSchema.safeParse({
+    email: formData.get("email"),
+  });
+
+  if (!parsed.success) {
+    redirect(`/forgot-password?error=${encodeURIComponent(parsed.error.issues[0].message)}`);
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/confirm?type=recovery&next=/reset-password`,
+  });
+
+  // Same success message whether or not the email exists — an error message
+  // here would let anyone probe which emails are registered.
+  if (error && error.code !== "over_email_send_rate_limit") {
+    console.error("resetPasswordForEmail failed:", error.code, error.message);
+  }
+
+  const message =
+    error?.code === "over_email_send_rate_limit"
+      ? friendlyAuthErrorMessage(error)
+      : "Se esse e-mail estiver cadastrado, enviamos um link para redefinir sua senha.";
+
+  redirect(`/forgot-password?message=${encodeURIComponent(message)}`);
+}
+
+export async function resetPassword(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // Reaching this page without an active recovery session means the link
+  // was already used, expired, or never existed — send back to request a
+  // fresh one rather than letting the form submit with nothing to update.
+  if (!user) {
+    redirect(
+      `/forgot-password?error=${encodeURIComponent("Link expirado ou inválido. Solicite um novo.")}`,
+    );
+  }
+
+  const parsed = resetPasswordSchema.safeParse({
+    password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
+  });
+
+  if (!parsed.success) {
+    redirect(`/reset-password?error=${encodeURIComponent(parsed.error.issues[0].message)}`);
+  }
+
+  const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
+
+  if (error) {
+    redirect(`/reset-password?error=${encodeURIComponent(friendlyAuthErrorMessage(error))}`);
+  }
+
+  redirect(`/login?message=${encodeURIComponent("Senha atualizada. Entre com sua nova senha.")}`);
 }
 
 export async function signOut() {
