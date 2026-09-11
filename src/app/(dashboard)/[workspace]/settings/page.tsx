@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function SettingsPage({ params }: { params: { workspace: string } }) {
-  redirect(`/${params.workspace}/settings/members`);
+  redirect(`/${params.workspace}/settings/workspace`);
 }

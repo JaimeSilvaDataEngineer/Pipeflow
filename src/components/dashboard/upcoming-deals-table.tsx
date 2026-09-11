@@ -22,8 +22,8 @@ const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
 
 function dueDateClassName(dueDate: string, now: number) {
   const diffDays = (new Date(dueDate).getTime() - now) / (24 * 60 * 60 * 1000);
-  if (diffDays < 0) return "text-red-600 font-medium";
-  if (diffDays <= 3) return "text-amber-700 font-medium";
+  if (diffDays < 0) return "text-destructive font-medium";
+  if (diffDays <= 3) return "text-amber-600 dark:text-amber-400 font-medium";
   return "text-muted-foreground";
 }
 

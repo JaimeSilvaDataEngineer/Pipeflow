@@ -58,7 +58,7 @@ function DealCard({
         trigger={
           <Card className="cursor-grab gap-2 p-3 shadow-sm active:cursor-grabbing">
             <p className="text-foreground text-sm font-medium">{deal.title}</p>
-            <p className="text-sm font-semibold text-blue-700">
+            <p className="text-primary text-sm font-semibold">
               {formatCurrency(deal.valueCents)}
             </p>
             {lead && <p className="text-muted-foreground truncate text-xs">{lead.company}</p>}

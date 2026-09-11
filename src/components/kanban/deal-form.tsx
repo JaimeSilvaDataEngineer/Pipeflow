@@ -41,7 +41,7 @@ function DealForm({
         {errors.title && <p className="text-destructive text-xs">{errors.title}</p>}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="deal-value">Valor (R$)</Label>
           <Input
@@ -69,7 +69,7 @@ function DealForm({
           {errors.dueDate && <p className="text-destructive text-xs">{errors.dueDate}</p>}
         </div>
 
-        <div className="col-span-2 flex flex-col gap-1.5">
+        <div className="flex flex-col gap-1.5 sm:col-span-2">
           <Label htmlFor="deal-lead">Lead vinculado</Label>
           <Select value={values.leadId} onValueChange={(value) => onChange("leadId", value ?? "")}>
             <SelectTrigger id="deal-lead" className="w-full">
