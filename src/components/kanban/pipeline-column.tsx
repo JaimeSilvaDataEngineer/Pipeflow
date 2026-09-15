@@ -39,7 +39,7 @@ function PipelineColumn({
   const totalCents = deals.reduce((sum, deal) => sum + deal.valueCents, 0);
 
   return (
-    <div className="flex w-72 shrink-0 flex-col gap-3">
+    <div className="flex w-[85vw] shrink-0 snap-start flex-col gap-3 sm:w-72">
       <div className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
           <span className={cn("h-2 w-2 shrink-0 rounded-full", PIPELINE_STAGE_COLORS[color])} />
@@ -69,7 +69,7 @@ function PipelineColumn({
         ref={setNodeRef}
         className={cn(
           "flex min-h-[60vh] flex-col gap-2 rounded-lg border border-dashed p-2 transition-colors",
-          isOver ? "border-blue-400 bg-blue-50/60" : "border-border bg-muted/30",
+          isOver ? "border-primary bg-primary/10" : "border-border bg-muted/30",
         )}
       >
         {deals.map((deal) => (

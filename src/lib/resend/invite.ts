@@ -1,17 +1,33 @@
 import { resend } from "@/lib/resend/client";
 
+// inviterName and workspaceName are free-text fields a user controls (signup
+// full name, workspace name) with no character restrictions — only escaping
+// them keeps a crafted value (e.g. `</strong><a href=...>`) from injecting
+// markup/links into an email that otherwise looks like a trusted PipeFlow
+// notification to the invitee.
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export async function sendWorkspaceInviteEmail(params: {
   to: string;
   workspaceName: string;
   inviterName: string;
   acceptUrl: string;
 }) {
-  const { to, workspaceName, inviterName, acceptUrl } = params;
+  const { to, acceptUrl } = params;
+  const workspaceName = escapeHtml(params.workspaceName);
+  const inviterName = escapeHtml(params.inviterName);
 
   const { error } = await resend.emails.send({
     from: process.env.RESEND_FROM_EMAIL!,
     to,
-    subject: `${inviterName} convidou você para o workspace ${workspaceName} no PipeFlow`,
+    subject: `${params.inviterName} convidou você para o workspace ${params.workspaceName} no PipeFlow`,
     html: `
       <div style="font-family: -apple-system, sans-serif; max-width: 480px; margin: 0 auto; color: #0f172a;">
         <h2 style="color: #2563eb; margin-bottom: 4px;">PipeFlow CRM</h2>

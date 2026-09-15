@@ -181,12 +181,12 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Settings: abas Workspace, Membros, Billing
-- [ ] Formulário de nome/slug do workspace (mock save)
-- [ ] Lista de membros com badges Admin/Membro + botão convidar (UI only)
-- [ ] Dialog de convite por e-mail (UI only)
-- [ ] Página Billing: card do plano atual (Free/Pro), limites, CTA upgrade
-- [ ] Comparativo Free vs Pro conforme PRD (2 membros/50 leads vs ilimitado/R$49)
+- [x] Settings: abas Workspace, Membros, Billing
+- [x] Formulário de nome/slug do workspace — persistência real (Supabase), Admin-only, não mock save
+- [x] Lista de membros com badges Admin/Membro + botão convidar
+- [x] Dialog de convite por e-mail
+- [x] Página Billing: card do plano atual (Free/Pro), limites, CTA upgrade
+- [x] Comparativo Free vs Pro conforme PRD (2 membros/50 leads vs ilimitado/R$49)
 
 **Commit final:** `feat(ui): add settings, members and billing screens (mock data)`
 
@@ -202,7 +202,7 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 - [x] Projeto Supabase criado na nuvem (plano free)
 - [x] `.env.local` configurado com `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (gitignored)
-- [ ] `supabase init` local (linkado ao projeto remoto via `supabase link`)
+- [ ] `supabase init` local (linkado ao projeto remoto via `supabase link`) — projeto está linkado via CLI (`supabase projects list` mostra `linked: true`), mas não há `supabase/config.toml` no repo
 - [x] Instalar `@supabase/supabase-js` e `@supabase/ssr`
 - [x] Helpers: `createClient` (browser + server) em `src/lib/supabase/`
 - [ ] Smoke test: query trivial confirmando a conexão (ex: `select 1`)
@@ -219,16 +219,16 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Migration: `workspaces` (id, name, slug, plan, stripe_customer_id, created_at)
-- [ ] Migration: `workspace_members` (workspace_id, user_id, role: admin|member)
-- [ ] Migration: `leads` (workspace_id, name, email, phone, company, role_title, status, assigned_to, created_at)
-- [ ] Migration: `deals` (workspace_id, lead_id, title, value_cents, stage, assigned_to, due_date)
-- [ ] Migration: `activities` (workspace_id, lead_id, type, description, author_id, created_at)
-- [ ] Índices: `workspace_id` em todas as tabelas scoped; FK indexes
-- [ ] RLS habilitado em todas as tabelas
-- [ ] Policies: isolamento por membership; Admin vs Member (Member sem acesso a billing/settings sensíveis)
+- [x] Migration: `workspaces` (id, name, slug, plan, stripe_customer_id, created_at)
+- [x] Migration: `workspace_members` (workspace_id, user_id, role: admin|member)
+- [x] Migration: `leads` (workspace_id, name, email, phone, company, role_title, status, assigned_to, created_at)
+- [x] Migration: `deals` (workspace_id, lead_id, title, value_cents, stage, assigned_to, due_date)
+- [x] Migration: `activities` (workspace_id, lead_id, type, description, author_id, created_at) — tabela existe no schema (`20260824100500_activities.sql`); UI/backend consumindo ainda não implementados (ver M4b/M10)
+- [x] Índices: `workspace_id` em todas as tabelas scoped; FK indexes
+- [x] RLS habilitado em todas as tabelas
+- [x] Policies: isolamento por membership; Admin vs Member (Member sem acesso a billing/settings sensíveis)
 - [ ] Seed script com dados de exemplo
-- [ ] Gerar tipos TS: `src/types/database.ts`
+- [x] Gerar tipos TS: `src/types/database.ts` — arquivo gerado é `src/types/supabase.ts` (nome diferente do planejado, mesmo propósito)
 
 **Commit final:** `feat(db): add Supabase schema, RLS policies and generated types`
 
@@ -242,15 +242,15 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Integrar Supabase Auth (email/password)
-- [ ] Páginas login/signup funcionais com validação Zod
-- [ ] Middleware Next.js: proteger `(dashboard)/*`, redirecionar não autenticados
-- [ ] Server Action: criar workspace no signup (onboarding)
-- [ ] Server Action: listar workspaces do usuário
-- [ ] Workspace switcher conectado ao banco (URL `/[workspace]/...`)
-- [ ] Validar membership antes de renderizar rotas do dashboard
-- [ ] Logout funcional
-- [ ] Página de onboarding para usuário sem workspace
+- [x] Integrar Supabase Auth (email/password)
+- [x] Páginas login/signup funcionais com validação Zod
+- [x] Middleware Next.js: proteger `(dashboard)/*`, redirecionar não autenticados (`src/middleware.ts`)
+- [x] Server Action: criar workspace no signup (onboarding)
+- [x] Server Action: listar workspaces do usuário
+- [x] Workspace switcher conectado ao banco (URL `/[workspace]/...`)
+- [x] Validar membership antes de renderizar rotas do dashboard
+- [x] Logout funcional
+- [x] Página de onboarding para usuário sem workspace
 
 **Commit final:** `feat(auth): integrate Supabase Auth with workspace creation and switching`
 
@@ -352,8 +352,8 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 - [x] Botão upgrade na página Billing funcional
 - [x] Webhook Stripe (`checkout.session.completed`, `customer.subscription.deleted`, `invoice.payment_failed`) — implementado como Route Handler (`src/app/api/webhooks/stripe/route.ts`) em vez de Edge Function, mesmo efeito
 - [x] Atualizar `workspaces.plan` no Supabase via webhook
-- [ ] Enforcement server-side: Free max 2 membros, 50 leads
-- [ ] Mensagens de limite atingido na UI (convite e criação de lead)
+- [x] Enforcement server-side: Free max 2 membros, 50 leads (`src/lib/limits.ts`, usado em `leads/actions.ts` e `settings/members/actions.ts`)
+- [x] Mensagens de limite atingido na UI (convite e criação de lead)
 - [x] Customer Portal link para gerenciar assinatura
 
 **Commit final:** `feat(billing): integrate Stripe Checkout, webhooks and Free plan limits`
@@ -368,14 +368,14 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Tabela `workspace_invites` (email, role, token, expires_at, workspace_id)
-- [ ] Integração Resend em `src/lib/resend/`
-- [ ] Server Action: enviar convite (valida limite de membros no Free)
-- [ ] Template de e-mail com link de aceite
-- [ ] Página `/invite/[token]`: aceitar convite (login/signup se necessário)
-- [ ] Criar `workspace_members` ao aceitar
-- [ ] Lista de membros real na Settings (remover mock)
-- [ ] Admin pode remover membro; Member não acessa billing
+- [x] Tabela `workspace_invites` (email, role, token, expires_at, workspace_id)
+- [x] Integração Resend em `src/lib/resend/`
+- [x] Server Action: enviar convite (valida limite de membros no Free)
+- [x] Template de e-mail com link de aceite
+- [x] Página `/invite/[token]`: aceitar convite (login/signup se necessário)
+- [x] Criar `workspace_members` ao aceitar
+- [x] Lista de membros real na Settings (remover mock)
+- [x] Admin pode remover membro; Member não acessa billing
 
 **Commit final:** `feat(collaboration): add email invites with Resend and member management`
 
@@ -389,9 +389,9 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Projeto Supabase produção criado
-- [ ] Migrations aplicadas em produção (`supabase db push`)
-- [ ] Edge Function Stripe webhook deployada
+- [x] Projeto Supabase produção criado (`Pipeflow`, região sa-east-1, `ACTIVE_HEALTHY`)
+- [x] Migrations aplicadas em produção (`supabase db push`) — confirmado via `supabase migration list`, sem drift
+- [ ] Edge Function Stripe webhook deployada — N/A: webhook implementado como Route Handler (`src/app/api/webhooks/stripe/route.ts`) em vez de Edge Function (ver nota no M12)
 - [ ] Projeto Vercel conectado ao repo GitHub
 - [ ] Env vars configuradas na Vercel (Supabase URL/keys, Stripe, Resend)
 - [ ] Env vars configuradas no Supabase (Stripe webhook secret)
@@ -448,10 +448,10 @@ flowchart LR
 
 ## Checklist pré-deploy (M14)
 
-- [ ] `npm run build` passa sem erros
-- [ ] `npm run lint` e `typecheck` limpos
+- [x] `npm run build` passa sem erros
+- [x] `npm run lint` e `typecheck` limpos
 - [ ] RLS testado com 2 usuários em workspaces diferentes
 - [ ] Webhook Stripe testado (Stripe CLI local + produção)
-- [ ] Plano Free bloqueia corretamente no 3º membro e 51º lead
-- [ ] Nenhum secret commitado (`.env.local` gitignored)
-- [ ] Landing page acessível publicamente; dashboard exige auth
+- [ ] Plano Free bloqueia corretamente no 3º membro e 51º lead — enforcement implementado (`src/lib/limits.ts`), mas ainda não testado ponta a ponta
+- [x] Nenhum secret commitado (`.env.local` gitignored)
+- [x] Landing page acessível publicamente; dashboard exige auth — confirmado por código: `(marketing)` fora do matcher de `src/middleware.ts`, rotas `[workspace]/*` protegidas
