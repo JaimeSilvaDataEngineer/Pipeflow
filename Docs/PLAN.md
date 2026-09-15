@@ -314,6 +314,8 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 - [ ] Ícone/badge por tipo de atividade
 - [ ] Remover mocks de atividades
 
+**Status:** não implementado — depende do M4b (Timeline de Atividades UI), também não implementado. A tabela `activities` já existe no schema (M6b). **Impacto de não implementar:** nenhum bloqueio técnico (nenhuma outra feature — leads, pipeline, dashboard, billing, convites — depende dessa tabela); o card "Atividades" na página de detalhe do lead já sinaliza "em breve" (`src/components/leads/lead-detail.tsx`). É uma lacuna de escopo de produto (histórico de interações do PRD), não de estabilidade.
+
 **Commit final:** `feat(activities): add activity CRUD and live timeline on lead detail`
 
 ---
