@@ -14,34 +14,43 @@ const FUNNEL_COLORS: Record<string, string> = {
 };
 
 function FunnelChart({ data }: { data: FunnelStageData[] }) {
+  const hasData = data.some((stage) => stage.count > 0);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-base">Funil de vendas</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-72 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <RechartsFunnelChart>
-              <Tooltip
-                formatter={(value) => [`${value} negócio${value === 1 ? "" : "s"}`, ""]}
-                labelFormatter={() => ""}
-              />
-              <Funnel dataKey="count" data={data} nameKey="label" isAnimationActive>
-                <LabelList
-                  position="right"
-                  dataKey="label"
-                  fill="var(--foreground)"
-                  stroke="none"
-                  fontSize={12}
+        {hasData ? (
+          <div className="h-72 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <RechartsFunnelChart>
+                <Tooltip
+                  formatter={(value) => [`${value} negócio${value === 1 ? "" : "s"}`, ""]}
+                  labelFormatter={() => ""}
                 />
-                {data.map((stage) => (
-                  <Cell key={stage.stageId} fill={FUNNEL_COLORS[stage.stageId]} />
-                ))}
-              </Funnel>
-            </RechartsFunnelChart>
-          </ResponsiveContainer>
-        </div>
+                <Funnel dataKey="count" data={data} nameKey="label" isAnimationActive>
+                  <LabelList
+                    position="right"
+                    dataKey="label"
+                    fill="var(--foreground)"
+                    stroke="none"
+                    fontSize={12}
+                  />
+                  {data.map((stage) => (
+                    <Cell key={stage.stageId} fill={FUNNEL_COLORS[stage.stageId]} />
+                  ))}
+                </Funnel>
+              </RechartsFunnelChart>
+            </ResponsiveContainer>
+          </div>
+        ) : (
+          <div className="text-muted-foreground flex h-72 flex-col items-center justify-center gap-1 text-center text-sm">
+            <p>Nenhum negócio no pipeline ainda.</p>
+            <p>Crie negócios no Kanban para ver o funil de vendas.</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -59,7 +59,7 @@ export default async function BillingPage({
   return (
     <div className="flex max-w-2xl flex-col gap-4">
       {searchParams.checkout === "success" && (
-        <p className="text-sm text-green-700">
+        <p className="text-sm text-green-600 dark:text-green-400">
           Assinatura confirmada! Pode levar alguns segundos para refletir aqui.
         </p>
       )}
@@ -143,15 +143,15 @@ export default async function BillingPage({
           <CardContent>
             <ul className="flex flex-col gap-2 text-sm">
               <li className="flex items-center gap-2">
-                <CheckIcon className="size-4 text-blue-600" />
+                <CheckIcon className="text-primary size-4" />
                 Membros ilimitados
               </li>
               <li className="flex items-center gap-2">
-                <CheckIcon className="size-4 text-blue-600" />
+                <CheckIcon className="text-primary size-4" />
                 Leads ilimitados
               </li>
               <li className="flex items-center gap-2">
-                <CheckIcon className="size-4 text-blue-600" />
+                <CheckIcon className="text-primary size-4" />
                 Pipeline Kanban completo
               </li>
             </ul>

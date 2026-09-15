@@ -181,8 +181,8 @@ Plano de desenvolvimento do PipeFlow CRM, do setup ao deploy em produção.
 
 ### Entregas
 
-- [ ] Settings: abas Workspace, Membros, Billing — apenas Membros e Billing existem (`src/components/settings/settings-nav.tsx`); aba Workspace implementada em separado na branch `feat/workspace-settings` (ainda não mergeada)
-- [ ] Formulário de nome/slug do workspace (mock save) — implementado com persistência real na branch `feat/workspace-settings` (ainda não mergeada)
+- [x] Settings: abas Workspace, Membros, Billing
+- [x] Formulário de nome/slug do workspace — persistência real (Supabase), Admin-only, não mock save
 - [x] Lista de membros com badges Admin/Membro + botão convidar
 - [x] Dialog de convite por e-mail
 - [x] Página Billing: card do plano atual (Free/Pro), limites, CTA upgrade

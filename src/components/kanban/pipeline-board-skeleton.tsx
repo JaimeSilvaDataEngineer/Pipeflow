@@ -4,7 +4,7 @@ function PipelineBoardSkeleton() {
   return (
     <div className="flex gap-4 overflow-x-auto pb-4">
       {Array.from({ length: 6 }).map((_, columnIndex) => (
-        <div key={columnIndex} className="flex w-72 shrink-0 flex-col gap-3">
+        <div key={columnIndex} className="flex w-[85vw] shrink-0 flex-col gap-3 sm:w-72">
           <Skeleton className="h-5 w-32" />
           <Skeleton className="h-4 w-20" />
           <div className="flex flex-col gap-2">

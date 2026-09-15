@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const SETTINGS_TABS = [
+  { href: "workspace", label: "Workspace" },
   { href: "members", label: "Membros" },
   { href: "billing", label: "Assinatura" },
 ] as const;

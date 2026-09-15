@@ -75,7 +75,7 @@ function PipelineBoard({
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <div className="flex gap-4 overflow-x-auto pb-4">
+      <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
         {PIPELINE_STAGES.map((stage) => (
           <PipelineColumn
             key={stage.id}
